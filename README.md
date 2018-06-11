@@ -1,6 +1,4 @@
-# simple-react-full-stack
-
-La Banou
+# La Banou
 
 ### Qu'est ce que La Banou ? 
 
