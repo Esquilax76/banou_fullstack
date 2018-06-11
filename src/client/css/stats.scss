@@ -1,0 +1,86 @@
+.statsContainer{
+	height: calc(100% - 115px);
+	width: 100%;
+	margin-top: 65px;
+	padding-top: 50px;
+	background-image: url("../img/background.png");
+	background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+}
+
+.chartsContainer{
+	display: flex;
+    flex-direction: column;
+    width: 75%;
+    background-color: white;
+    height: calc(100% - 50px);
+    border-radius: 10px;
+    margin-right: 3%;
+}
+
+.chartsContent{
+	display: flex;
+	justify-content: space-between;
+}
+
+.products{
+	display: flex;
+}
+
+.productsChart{
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.productsChartImg{
+	background-repeat: no-repeat;
+    background-position: center;
+    background-size: 45px;
+    width: 50%; 
+    margin-bottom: 60px;
+}
+
+.chartTitle{
+	background-color: #A6BFBF;
+    padding: 10px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.chartTitleDark{
+	background-color: #3E4F4F;
+	color: white;
+    padding: 10px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.chart{
+	width: 28%;
+	padding: 20px;
+}
+
+.chartLarge{
+	width: 45%;
+	padding: 20px;
+}
+
+.leftChart{
+    width: 72%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.chartRow{
+	width: 100%;
+    display: flex;
+}

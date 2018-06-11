@@ -1,0 +1,36 @@
+$darkgrey : #202325;
+
+.creditsContainer{
+    height: calc(100% - 115px);
+    overflow-y: scroll;
+    width: 100%;
+    margin-top: 65px;
+    padding-top: 50px;
+    background-color: #202325;
+    color: white;
+    text-align: center;
+}
+
+.creditsPart{
+	width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-bottom: 2px solid white;
+    padding-bottom: 50px;
+    margin-left: 20%;
+}
+
+.creditsParagraph{
+	margin-bottom: 20px;
+}
+
+.creditsTitle{
+	margin-top: 50px;
+}
+
+.creditsContentTitle{
+	text-decoration: underline;
+	margin-bottom: 20px;
+}

@@ -1,0 +1,144 @@
+$darkgrey : #202325;
+
+.fullpage{
+	height: calc(100% - 65px);
+	width: 100%;
+}
+
+.beersContainer{
+	height: calc(100% - 50px);
+	width: 100%;
+	margin-top: 65px;
+	padding-top: 50px;
+	background-image: url("../img/background.png");
+	background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bottleContainer{
+	height: 100%;
+	width: 100%;
+}
+
+.pageTitle{
+	font-size: 1.6em;
+	border-bottom: 1px solid $darkgrey;
+	height: 2em;
+	margin-bottom: 50px;
+	letter-spacing: 3px;
+	color : $darkgrey;
+}
+
+.bottle{
+	z-index: 10;
+	width: 200px;
+	height: 80%;
+	transition: 2s;
+	position: absolute;
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.description{
+	width: 225px;
+	height: 80%;
+	transition: 2s;
+	position: absolute;
+	z-index: 9;
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: -20px;
+}
+
+.desc{
+	margin-top: 220px;
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    justify-content: center;
+    text-align: center;
+    padding: 0 20% 0 20%;
+}
+
+.descTitle{
+	font-family: titleFont;
+	font-size: 1.5em;
+	margin-bottom: 15px;
+}
+
+.descText{
+	font-size: 0.9em;
+	margin-bottom: 15px;
+}
+
+.descAlcool, .descIbu{
+	font-size: 1.2em;
+	padding: 15px 0 15px 0;
+	border-bottom: 1px solid white;
+	width: 50%;
+}
+
+.descSRM{
+	font-size: 1.2em;
+	padding: 15px 0 0 0;
+}
+
+.little{
+	font-size: 0.5em;
+}
+
+.value{
+	font-weight: bold;
+}
+
+.unit{
+	font-size: 0.4em;
+	font-weight: normal;
+}
+
+
+@media screen and (max-width: 1600px)
+{
+	.desc{
+		margin-top: 175px;
+	    padding: 0 25% 0 25%;
+	}
+
+	.descTitle{
+		font-size: 1.2em;
+		margin-bottom: 10px;
+	}
+
+	.descText{
+		font-size: 0.7em;
+		margin-bottom: 10px;
+	}
+
+	.descAlcool,.descIbu{
+		padding: 5px 0 5px 0;
+	}
+
+	.descSRM{
+		padding: 0;
+	}
+	
+	.description{
+		width: 210px;
+	}
+
+	.pageTitle{
+		margin-bottom: 30px;
+	}
+
+	.beersContainer{
+		padding-top: 30px;
+		height: calc(100% - 30px);
+	}
+}

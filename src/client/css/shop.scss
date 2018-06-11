@@ -1,0 +1,314 @@
+$darkgrey : #202325;
+$darkgreygreen : #3E4F4F;
+$greygreen : #A6BFBF;
+
+@font-face {
+    font-family: titleFont;
+    src: url(../fonts/SoulMission.ttf);
+}
+
+.shopContainer{
+	height: calc(100% - 155px);
+    overflow-y: scroll;
+    width: 100%;
+    margin-top: 65px;
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.shopItems{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 60%;
+}
+
+.shopItem{
+	width: 32%;
+	border: 1px solid black;
+	margin-bottom: 20px;
+	background-color: $darkgrey;
+	cursor: pointer;
+    transition: 0.3s;
+}
+
+.shopItem:hover{
+	box-shadow: 7px 8px 20px 0px rgba(0, 0, 0, 0.5);
+}
+
+.shopItemImage{
+	width: 100%;
+}
+
+.shopItemTitle{
+	font-size: 1.1em;
+	padding: 10px 0 0 10px;
+	color: white;
+}
+
+.shopItemPrice{
+	font-size: 0.8em;
+	padding: 10px 0 10px 10px;
+	color: #6E6968;
+}
+
+.disable{
+	height: 100%;
+    width: 100%;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items: center;
+}
+
+.popUp{
+	width: 50%;
+    background-color: white;
+    margin-left: 25%;
+    border-radius: 5px;
+}
+
+.close{
+    border-radius: 30px;
+    border: 3px solid $darkgrey;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    position: relative;
+    float: right;
+    margin-right: -15px;
+    margin-top: -15px;
+    font-size: 1.5em;
+    text-align: center;
+    font-weight: bold;
+    transform: rotate(0.125turn);
+    cursor: pointer;
+}
+
+.popUpHeader{
+	background-color: $darkgrey;
+	height: 2em;
+	line-height: 2em;
+	text-align: center;
+	font-weight: bold;
+	color: white;
+	font-size: 1.5em;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+.popUpContent{
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+.popUpImage{
+	padding: 20px;
+	width: 45%;
+}
+.popUpDescription{
+	width: 55%;
+	height: 100%;
+	padding: 20px;
+}
+.popUpTitle{
+	font-size: 1.5em;
+	font-family: titleFont;
+	margin-bottom: 5px;
+}
+
+.popUpText{
+	margin-top: 10px;
+	margin-bottom: 20px
+}
+
+.popUpinput{
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.inputLabel{
+	color: #6E6968;
+	margin-bottom: 10px;
+}
+
+.popUpSelect{
+	border: 1px solid #d3d0cf;
+	color: #6E6968;
+	width: 50%;
+	padding: 10px;
+}
+
+.popUpNumber{
+	border: 1px solid #d3d0cf;
+	color: #6E6968;
+	width: calc(50% - 22px);
+	padding: 10px;
+}
+
+.popUpPrice{
+	margin-bottom: 20px;
+	font-size: 1.2em;
+}
+
+.popUpPriceDetail{
+	font-size: 0.6em;
+	color: #6E6968;
+	margin-left: 20px;
+}
+
+.addToBasket{
+	display: flex;
+	background-color: $greygreen;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	padding: 10px;
+	width: calc(50% - 20px);
+	color: $darkgrey;
+}
+
+.addToBasket:hover{
+	background-color: $darkgreygreen;
+	color: white;
+}
+
+.radio:last-of-type{
+	margin-left: 20px;
+}
+
+.basket{
+	background-image: url("../img/basket.png");
+	width: 40px;
+    height: 40px;
+    line-height: 55px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    text-align: center;
+    color: $darkgrey;
+    cursor: pointer;
+}
+
+.basketMenu{
+	height: 100%;
+	position: absolute;
+	right: 0;
+	top: 0;
+	background-color: white;
+	transition: 0.3s;
+	overflow-y: auto;
+}
+
+.basketMenuHeader{
+	background-color: $darkgrey;
+	height: 65px;
+	line-height: 65px;
+	text-align: center;
+	color: white;
+	font-size: 1.5em;
+}
+
+.basketMenuContent{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100% - 85px);
+}
+
+.basketItem{
+	display: flex;
+	text-align: center;
+	margin: 20px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid $darkgrey;
+}
+
+.basketItemImage{
+	height: 100px;
+}
+
+.basketItemDesc{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 0 0 0 10px;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.basketItemTitle{
+	font-size: 1.2em;
+}
+
+.basketItemInfo{
+	font-weight: bold;
+	font-size: 0.8em;
+}
+
+.emptyBasket{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 30px;
+    font-size: 1.2em;
+}
+
+.basketTotal{
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 20px;
+    align-self: flex-end;
+    bottom: 0;
+}
+
+.basketButton{
+	background-color: $darkgrey;
+    height: 1.5em;
+    line-height: 1.5em;
+    color: white;
+    padding: 10px;
+}
+
+.basketButton:hover{
+	background-color: $darkgreygreen;
+}
+
+.basketValidation{
+	display: flex;
+    align-items: center;
+    justify-content: space-around
+}
+
+.basketQuantity{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.basketQuantityButtons{
+	display: flex;
+	align-items: center;
+}
+
+.basketQuantityButton{
+	background-color: $darkgrey;
+    height: 25px;
+    width: 25px;
+    display: flex;
+    align-items: center;
+    color: white;
+    justify-content: center;
+    margin-right: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.disableButton{
+	background-color: grey;
+}
