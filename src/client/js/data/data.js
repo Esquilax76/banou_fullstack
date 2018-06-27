@@ -1,134 +1,90 @@
 module.exports = {
-    beers: [
-        {
-            name: "IPA",
-            description: "Une Indian Pale Ale houblonnée aux arômes floraux et à l’amertume caractéristique.",
-            alcool: "7",
-            ibu: "70",
-            ebc: "18",
-        },
-        {
-            name: "BLANCHE",
-            description: "La bière d’été par excellence, rafraichissante aux arômes d’agrumes",
-            alcool: "4.8",
-            ibu: "30",
-            ebc: "8",
-        },
-        {
-            name: "BLONDE",
-            description: "Une pale ale classique, désaltérante et légère, aux arômes équilibrés de céréales et de houblons.",
-            alcool: "5",
-            ibu: "35",
-            ebc: "14",
-        },
-        {
-            name: "ROUSSE",
-            description: "Une bière à la robe élégante, appréciée des amateurs pour sa finesse et la richesse de ses arômes.",
-            alcool: "7",
-            ibu: "50",
-            ebc: "28",
-        },
-        {
-            name: "BRUNE",
-            description: "Une bière de caractère, réconfortante, aux arômes torréfiés.",
-            alcool: "6",
-            ibu: "23",
-            ebc: "44",
-        },
-        {
-            name: "NOEL",
-            description: "Bière brune brassée avec de l’orange, de la cannelle et du gingembre. Une bière forte et ronde aux saveurs de noël : épicée et chaleureuse.",
-            alcool: "6",
-            ibu: "23",
-            ebc: "44",
-        }
-    ],
     story: [
         {
             title: "DECOUVERTE DE LA BIERE ARTISANALE",
-            picture: require("../../img/story1.jpg"),
+            picture: require("../../img/story/story1.jpg"),
             description: "L’histoire de la Banou commence au Canada, alors que nous découvrons la culture de la bière artisanale au travers des innombrables microbrasseries québécoises.  Alors que nous parcourons la Gaspésie, l’idée nous apparait comme une évidence: nous ouvrirons un jour une microbrasserie sur un territoire qui nous est cher : la Corrèze.",
         },
         {
             title: "NOS DEBUTS DE BRASSEURS",
-            picture: require("../../img/story2.jpg"),
+            picture: require("../../img/story/story2.jpg"),
             description: "Une fois rentrés en France, nous nous initions donc au brassage dans notre petit appartement parisien. Dès que possible, nous essayons de brasser dans la maison familiale en Corrèze afin de tester nos recettes avec l’eau corrézienne. En parallèle, nous travaillons chacun de notre côté en tant qu’ingénieur afin d'économiser et ainsi se donner les moyens matériels de lancer le projet.",
         },
         {
             title: "UNE PASSION QUI S'ENRICHIE",
-            picture: require("../../img/story3.jpg"),
+            picture: require("../../img/story/story3.jpg"),
             description: "Le projet se précise peu à peu. Nous travaillons sur le business plan et la conception de la brasserie. Nous rencontrons également beaucoup de brasseurs français, afin de recueillir de précieux conseils, d’échanger sur notre projet et de nous former au brassage à plus grande échelle.",
         },
         {
             title: "NAISSANCE DE LA BANOU",
-            picture: require("../../img/story4.jpg"),
+            picture: require("../../img/story/story4.jpg"),
             description: "La Banou prendra officiellement vie en décembre 2018. Nous quitterons alors nos emplois respectifs et déserterons la capitale pour rejoindre notre chère Corrèze. La mise en place de la brasserie pourra prendre un peu de temps, mais nous ferons notre maximum pour que vous puissiez la déguster d’ici l’été prochain !",
         },
     ],
-    find: [
-        {
-            name: "Brive",
-            latitude: 45.142797,
-            longitude: 1.520677,
-        },
-        {
-            name: "Argentat",
-            latitude: 45.096796,
-            longitude: 1.939776,
-        },
-        {
-            name: "Bordeaux",
-            latitude: 44.851051,
-            longitude: -0.570350,
-        },
-        {
-            name: "Paris",
-            latitude: 48.860419,
-            longitude: 2.347402,
-        },
-    ],
-    map: [
-        {
-            name: "Les 3 caves",
-            type: "cave",
-            latitude: 45.1660443,
-            longitude: 1.5261588,
-            address: "",
-            site: "",
-            phone: "",
-            time: ""
-        },
-        {
-            name: "Le Watson",
-            type: "bar",
-            latitude: 45.1581444,
-            longitude: 1.5328519,
-            address: "",
-            site: "",
-            phone: "",
-            time: ""
-        },
-        {
-            name: "V And B Brive",
-            type: "bar",
-            latitude: 45.1496541,
-            longitude: 1.4829608,
-            address: "",
-            site: "",
-            phone: "",
-            time: ""
-        },
-        {
-            name: "Le Banou Bar",
-            type: "us",
-            latitude: 45.164172,
-            longitude: 1.537178,
-            address: "40 quai Tourny - 19100 Brives la Gaillarde",
-            site: "http://www.labanou.com",
-            phone: "06.58.26.98.58",
-            time: "Tout le temps"
-        }
-    ],
+    // find: [
+    //     {
+    //         name: "Brive",
+    //         latitude: 45.142797,
+    //         longitude: 1.520677,
+    //     },
+    //     {
+    //         name: "Argentat",
+    //         latitude: 45.096796,
+    //         longitude: 1.939776,
+    //     },
+    //     {
+    //         name: "Bordeaux",
+    //         latitude: 44.851051,
+    //         longitude: -0.570350,
+    //     },
+    //     {
+    //         name: "Paris",
+    //         latitude: 48.860419,
+    //         longitude: 2.347402,
+    //     },
+    // ],
+    // map: [
+    //     {
+    //         name: "Les 3 caves",
+    //         type: "cave",
+    //         latitude: 45.1660443,
+    //         longitude: 1.5261588,
+    //         address: "",
+    //         site: "",
+    //         phone: "",
+    //         time: ""
+    //     },
+    //     {
+    //         name: "Le Watson",
+    //         type: "bar",
+    //         latitude: 45.1581444,
+    //         longitude: 1.5328519,
+    //         address: "",
+    //         site: "",
+    //         phone: "",
+    //         time: ""
+    //     },
+    //     {
+    //         name: "V And B Brive",
+    //         type: "bar",
+    //         latitude: 45.1496541,
+    //         longitude: 1.4829608,
+    //         address: "",
+    //         site: "",
+    //         phone: "",
+    //         time: ""
+    //     },
+    //     {
+    //         name: "Le Banou Bar",
+    //         type: "us",
+    //         latitude: 45.164172,
+    //         longitude: 1.537178,
+    //         address: "40 quai Tourny - 19100 Brives la Gaillarde",
+    //         site: "http://www.labanou.com",
+    //         phone: "06.58.26.98.58",
+    //         time: "Tout le temps"
+    //     }
+    // ],
     credits: [
         {
             name: "Mention Légales",
@@ -164,226 +120,227 @@ module.exports = {
             ]
         }
     ],
-    shop: [
-        {
-            name: "IPA",
-            proPrice: "",
-            publicPrice: {
-                unit: {
-                    33: "2.80€",
-                    75: "5.00€"
-                },
-                pack: {
-                    33: "15.00€",
-                    75: "28.00€"
-                },
-                carton: {
-                    33: "28.00€",
-                    75: "50.00€"
-                },
-                fut: {
-                    33: "105.00€",
-                    75: "105.00€"
-                }
-            },
-            description: "Une Indian Pale Ale houblonnée aux arômes floraux et à l’amertume caractéristique.",
-            active: true,
-        },
-        {
-            name: "BLONDE",
-            proPrice: "",
-            publicPrice: {
-                unit: {
-                    33: "2.80€",
-                    75: "5.00€"
-                },
-                pack: {
-                    33: "15.00€",
-                    75: "28.00€"
-                },
-                carton: {
-                    33: "28.00€",
-                    75: "50.00€"
-                },
-                fut: {
-                    33: "105.00€",
-                    75: "105.00€"
-                }
-            },
-            description: "Une pale ale classique, désaltérante et légère, aux arômes équilibrés de céréales et de houblons.",
-            active: true
-        },
-        {
-            name: "BLANCHE",
-            proPrice: "",
-            publicPrice: {
-                unit: {
-                    33: "2.80€",
-                    75: "5.00€"
-                },
-                pack: {
-                    33: "15.00€",
-                    75: "28.00€"
-                },
-                carton: {
-                    33: "28.00€",
-                    75: "50.00€"
-                },
-                fut: {
-                    33: "105.00€",
-                    75: "105.00€"
-                }
-            },
-            description: "La bière d’été par excellence, rafraichissante aux arômes d’agrumes",
-            active: true
-        },
-        {
-            name: "ROUSSE",
-            proPrice: "",
-            publicPrice: {
-                unit: {
-                    33: "2.80€",
-                    75: "5.00€"
-                },
-                pack: {
-                    33: "15.00€",
-                    75: "28.00€"
-                },
-                carton: {
-                    33: "28.00€",
-                    75: "50.00€"
-                },
-                fut: {
-                    33: "105.00€",
-                    75: "105.00€"
-                }
-            },
-            description: "Une bière à la robe élégante, appréciée des amateurs pour sa finesse et la richesse de ses arômes.",
-            active: true
-        },
-        {
-            name: "BRUNE",
-            proPrice: "",
-            publicPrice: {
-                unit: {
-                    33: "2.80€",
-                    75: "5.00€"
-                },
-                pack: {
-                    33: "15.00€",
-                    75: "28.00€"
-                },
-                carton: {
-                    33: "28.00€",
-                    75: "50.00€"
-                },
-                fut: {
-                    33: "105.00€",
-                    75: "105.00€"
-                }
-            },
-            description: "Une bière de caractère, réconfortante, aux arômes torréfiés.",
-            active: true
-        },
-        {
-            name: "PACK DECOUVERTE",
-            proPrice: "",
-            publicPrice: {
-                unit: {
-                    33: "15.00€",
-                    75: "28.00€"
-                },
-                pack: {
-                    33: "15.00€",
-                    75: "28.00€"
-                },
-                carton: {
-                    33: "15.00€",
-                    75: "28.00€"
-                },
-                fut: {
-                    33: "15.00€",
-                    75: "28.00€"
-                },
-            },
-            description: "Découvrez la banou à travers ce pack comprenant:<ul><li>Une Banou Blanche</li><li>Une Banou Blonde</li><li>Une Banou Brune</li><li>Une Banou Rousse</li><li>Une Banou IPA</li><li>La Banou de saison</li></ul>",
-            active: true
-        },
-    ],
-    barNews: [
-        {
-            title: "Venez découvrir la bière du moment !",
-            desc: "Ceci est une description de la news",
-            image: require("../../img/bar.jpg")
-        },
-        {
-            title: "Inauguration du bar avec La Fouine en Concert",
-            desc: "Rendez-vous sur le boulodrome pour le show",
-            image: require("../../img/fouine.jpg")
-        },
-        {
-            title: "Distribution gratuite de goodies",
-            desc: "Lachés par avions sur tout Brive pendant la journée de dimanche",
-            image: require("../../img/avion.jpg")
-        },
-    ],
-    images: {
-        blonde: {
-            glass: require("../../img/verre_blonde.png"),
-            bottle: require("../../img/bouteille_blonde.png"),
-            unit: require("../../img/blonde_unit.jpg"),
-            pack: require("../../img/blonde_pack.jpg"),
-            carton: require("../../img/blonde_carton.jpg"),
-            fut: require("../../img/blonde_fut.jpg"),
-            stats: require("../../img/blonde_stats.png"),
-        },
-        blanche: {
-            glass: require("../../img/verre_blanche.png"),
-            bottle: require("../../img/bouteille_blanche.png"),
-            unit: require("../../img/blanche_unit.jpg"),
-            pack: require("../../img/blanche_pack.jpg"),
-            carton: require("../../img/blanche_carton.jpg"),
-            fut: require("../../img/blanche_fut.jpg"),
-            stats: require("../../img/blanche_stats.png"),
-        },
-        ipa: {
-            glass: require("../../img/verre_ipa.png"),
-            bottle: require("../../img/bouteille_ipa.png"),
-            unit: require("../../img/ipa_unit.jpg"),
-            pack: require("../../img/ipa_pack.jpg"),
-            carton: require("../../img/ipa_carton.jpg"),
-            fut: require("../../img/ipa_fut.jpg"),
-            stats: require("../../img/ipa_stats.png"),
-        },
-        brune: {
-            glass: require("../../img/verre_brune.png"),
-            bottle: require("../../img/bouteille_brune.png"),
-            unit: require("../../img/brune_unit.jpg"),
-            pack: require("../../img/brune_pack.jpg"),
-            carton: require("../../img/brune_carton.jpg"),
-            fut: require("../../img/brune_fut.jpg"),
-            stats: require("../../img/brune_stats.png"),
-        },
-        rousse: {
-            glass: require("../../img/verre_rousse.png"),
-            bottle: require("../../img/bouteille_rousse.png"),
-            unit: require("../../img/rousse_unit.jpg"),
-            pack: require("../../img/rousse_pack.jpg"),
-            carton: require("../../img/rousse_carton.jpg"),
-            fut: require("../../img/rousse_fut.jpg"),
-            stats: require("../../img/rousse_stats.png"),
-        },
-        noel: {
-            glass: require("../../img/verre_noel.png"),
-            bottle: require("../../img/bouteille_noel.png"),
-            stats: require("../../img/noel_stats.png"),
-        },
-        pack_decouverte: {
-            unit: require("../../img/pack_decouverte_unit.jpg"),
-            pack: require("../../img/pack_decouverte_unit.jpg"),
-            carton: require("../../img/pack_decouverte_unit.jpg"),
-            fut: require("../../img/pack_decouverte_unit.jpg"),
-            //stats: require("../../img/decouverte_stats.png"),
-        }
-    }
+    // shop: [
+    //     {
+    //         name: "IPA",
+    //         proPrice: "",
+    //         publicPrice: {
+    //             unit: {
+    //                 33: "2.80€",
+    //                 75: "5.00€"
+    //             },
+    //             pack: {
+    //                 33: "15.00€",
+    //                 75: "28.00€"
+    //             },
+    //             carton: {
+    //                 33: "28.00€",
+    //                 75: "50.00€"
+    //             },
+    //             fut: {
+    //                 33: "105.00€",
+    //                 75: "105.00€"
+    //             }
+    //         },
+    //         description: "Une Indian Pale Ale houblonnée aux arômes floraux et à l’amertume caractéristique.",
+    //         active: true,
+    //     },
+    //     {
+    //         name: "BLONDE",
+    //         proPrice: "",
+    //         publicPrice: {
+    //             unit: {
+    //                 33: "2.80€",
+    //                 75: "5.00€"
+    //             },
+    //             pack: {
+    //                 33: "15.00€",
+    //                 75: "28.00€"
+    //             },
+    //             carton: {
+    //                 33: "28.00€",
+    //                 75: "50.00€"
+    //             },
+    //             fut: {
+    //                 33: "105.00€",
+    //                 75: "105.00€"
+    //             }
+    //         },
+    //         description: "Une pale ale classique, désaltérante et légère, aux arômes équilibrés de céréales et de houblons.",
+    //         active: true
+    //     },
+    //     {
+    //         name: "BLANCHE",
+    //         proPrice: "",
+    //         publicPrice: {
+    //             unit: {
+    //                 33: "2.80€",
+    //                 75: "5.00€"
+    //             },
+    //             pack: {
+    //                 33: "15.00€",
+    //                 75: "28.00€"
+    //             },
+    //             carton: {
+    //                 33: "28.00€",
+    //                 75: "50.00€"
+    //             },
+    //             fut: {
+    //                 33: "105.00€",
+    //                 75: "105.00€"
+    //             }
+    //         },
+    //         description: "La bière d’été par excellence, rafraichissante aux arômes d’agrumes",
+    //         active: true
+    //     },
+    //     {
+    //         name: "ROUSSE",
+    //         proPrice: "",
+    //         publicPrice: {
+    //             unit: {
+    //                 33: "2.80€",
+    //                 75: "5.00€"
+    //             },
+    //             pack: {
+    //                 33: "15.00€",
+    //                 75: "28.00€"
+    //             },
+    //             carton: {
+    //                 33: "28.00€",
+    //                 75: "50.00€"
+    //             },
+    //             fut: {
+    //                 33: "105.00€",
+    //                 75: "105.00€"
+    //             }
+    //         },
+    //         description: "Une bière à la robe élégante, appréciée des amateurs pour sa finesse et la richesse de ses arômes.",
+    //         active: true
+    //     },
+    //     {
+    //         name: "BRUNE",
+    //         proPrice: "",
+    //         publicPrice: {
+    //             unit: {
+    //                 33: "2.80€",
+    //                 75: "5.00€"
+    //             },
+    //             pack: {
+    //                 33: "15.00€",
+    //                 75: "28.00€"
+    //             },
+    //             carton: {
+    //                 33: "28.00€",
+    //                 75: "50.00€"
+    //             },
+    //             fut: {
+    //                 33: "105.00€",
+    //                 75: "105.00€"
+    //             }
+    //         },
+    //         description: "Une bière de caractère, réconfortante, aux arômes torréfiés.",
+    //         active: true
+    //     },
+    //     {
+    //         name: "PACK DECOUVERTE",
+    //         proPrice: "",
+    //         publicPrice: {
+    //             unit: {
+    //                 33: "15.00€",
+    //                 75: "28.00€"
+    //             },
+    //             pack: {
+    //                 33: "15.00€",
+    //                 75: "28.00€"
+    //             },
+    //             carton: {
+    //                 33: "15.00€",
+    //                 75: "28.00€"
+    //             },
+    //             fut: {
+    //                 33: "15.00€",
+    //                 75: "28.00€"
+    //             },
+    //         },
+    //         description: "Découvrez la banou à travers ce pack comprenant:<ul><li>Une Banou Blanche</li><li>Une Banou Blonde</li><li>Une Banou Brune</li><li>Une Banou Rousse</li><li>Une Banou IPA</li><li>La Banou de saison</li></ul>",
+    //         active: true
+    //     },
+    // ],
+    // barNews: [
+    //     {
+    //         title: "Venez découvrir la bière du moment !",
+    //         desc: "Ceci est une description de la news",
+    //         image: "bar"
+    //     },
+    //     {
+    //         title: "Inauguration du bar avec La Fouine en Concert",
+    //         desc: "Rendez-vous sur le boulodrome pour le show",
+    //         image: "fouine"
+    //     },
+    //     {
+    //         title: "Distribution gratuite de goodies",
+    //         desc: "Lachés par avions sur tout Brive pendant la journée de dimanche",
+    //         image: "avion"
+    //     },
+    // ],
+    // images: {
+    //     blonde: {
+    //         //glass: require("../../img/verre_blonde.png"),
+    //         //bottle: require("../../img/bouteille_blonde.png"),
+    //         unit: require("../../img/shop/blonde_unit.jpg"),
+    //         pack: require("../../img/shop/blonde_pack.jpg"),
+    //         carton: require("../../img/shop/blonde_carton.jpg"),
+    //         fut: require("../../img/shop/blonde_fut.jpg"),
+    //         //stats: require("../../img/blonde_stats.png"),
+    //     },
+    //     blanche: {
+    //         //glass: require("../../img/verre_blanche.png"),
+    //         //bottle: require("../../img/bouteille_blanche.png"),
+    //         unit: require("../../img/shop/blanche_unit.jpg"),
+    //         pack: require("../../img/shop/blanche_pack.jpg"),
+    //         carton: require("../../img/shop/blanche_carton.jpg"),
+    //         fut: require("../../img/shop/blanche_fut.jpg"),
+    //         //stats: require("../../img/blanche_stats.png"),
+    //     },
+    //     ipa: {
+    //         //glass: require("../../img/verre_ipa.png"),
+    //         //bottle: require("../../img/bouteille_ipa.png"),
+    //         unit: require("../../img/shop/ipa_unit.jpg"),
+    //         pack: require("../../img/shop/ipa_pack.jpg"),
+    //         carton: require("../../img/shop/ipa_carton.jpg"),
+    //         fut: require("../../img/shop/ipa_fut.jpg"),
+    //         //stats: require("../../img/ipa_stats.png"),
+    //     },
+    //     brune: {
+    //         //glass: require("../../img/verre_brune.png"),
+    //         //bottle: require("../../img/bouteille_brune.png"),
+    //         unit: require("../../img/shop/brune_unit.jpg"),
+    //         pack: require("../../img/shop/brune_pack.jpg"),
+    //         carton: require("../../img/shop/brune_carton.jpg"),
+    //         fut: require("../../img/shop/brune_fut.jpg"),
+    //         //stats: require("../../img/brune_stats.png"),
+    //     },
+    //     rousse: {
+    //         //glass: require("../../img/verre_rousse.png"),
+    //         //bottle: require("../../img/bouteille_rousse.png"),
+    //         unit: require("../../img/shop/rousse_unit.jpg"),
+    //         pack: require("../../img/shop/rousse_pack.jpg"),
+    //         carton: require("../../img/shop/rousse_carton.jpg"),
+    //         fut: require("../../img/shop/rousse_fut.jpg"),
+    //         //stats: require("../../img/rousse_stats.png"),
+    //     },
+    //     noel: {
+    //         //glass: require("../../img/verre_noel.png"),
+    //         //bottle: require("../../img/bouteille_noel.png"),
+    //         //stats: require("../../img/noel_stats.png"),
+    //         unit: require("../../img/shop/rousse_unit.jpg"),
+    //     },
+    //     pack_decouverte: {
+    //         unit: require("../../img/shop/pack_decouverte_unit.jpg"),
+    //         pack: require("../../img/shop/pack_decouverte_unit.jpg"),
+    //         carton: require("../../img/shop/pack_decouverte_unit.jpg"),
+    //         fut: require("../../img/shop/pack_decouverte_unit.jpg"),
+    //         //stats: require("../../img/decouverte_stats.png"),
+    //     }
+    // }
 };

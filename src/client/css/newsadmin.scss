@@ -1,0 +1,211 @@
+$darkgrey : #202325;
+$greygreen : #A6BFBF;
+$darkgreygreen : #3E4F4F;
+
+.newsAdminImage{
+	width: 20%;
+	height: 120px;
+	background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.newsSectionContainer{
+	padding: 15px;
+	overflow-y: scroll; 
+	margin-bottom: 15px;
+}
+
+.newsItemDesc{
+	display: flex;
+	flex-direction: column;
+	width: 65%;
+	padding: 0 40px 0 10px;
+}
+
+.newsInputs{
+	display: flex;
+	flex-direction: column;
+	width: 60%;
+	margin-right: 20px;
+}
+
+.newsLabel{
+	height: inherit;
+	margin-bottom: 0;
+}
+
+.popUpNewsContent{
+	display: flex;
+	padding: 20px;
+}
+
+.modifyNewsInput{
+	background-color: $darkgrey;
+	color: white;
+	border : 1px solid $darkgrey;
+	border-radius: 5px;
+	height: 2em;
+	text-indent: 10px;
+	margin-bottom: 20px;
+}
+
+.modifyNewsTextarea{
+	background-color: $greygreen;
+	border : 1px solid $darkgrey;
+	border-radius: 5px;
+	padding: 10px;
+	resize: none;
+	height: 13em;
+	padding-top: 10px;
+	font-family: inherit;
+}
+
+.imageName{
+	margin-top: 20px;
+	font-style: italic;
+	color: $greygreen;
+}
+
+.modifyNewsButton{
+	background-color: $darkgreygreen;
+	color: white;
+	border-radius: 5px;
+	height: 2em;
+	display: flex;
+	align-items: center;
+	padding: 0 10px 0 10px;
+	font-size: 1.2em;
+	cursor: pointer;
+	margin: 0 20px 20px auto;
+}
+
+.modifyNewsButton:hover{
+	background-color: $darkgrey;
+}
+
+/*******************/
+
+.findTableHeader{
+	display: flex;
+	align-items: center;
+}
+
+.findTableHeaderItem{
+	display: flex;
+	align-items: center;
+	justify-content: center !important;
+	height: 2em;
+	background-color: $darkgreygreen;
+	color: white;
+}
+
+.findTableItem{
+	border: 1px solid $darkgreygreen;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 4em;
+	padding: 10px
+}
+
+.findTableType{
+	width: 5%;
+}
+
+.findTableName{
+	width: 15%;
+}
+
+.findTableAddress{
+	width: 20%;
+}
+
+.findTableSite{
+	width: 20%;
+}
+
+.findTablePhone{
+	width: 15%;
+}
+
+.findTableOpening{
+	width: 15%
+}
+
+.findTableActions{
+	width: 10%;
+	justify-content: space-between;;
+}
+
+.findItemDesc{
+	width: 100%;
+	display: flex;
+}
+
+.findItem{
+	display: flex;
+	width: 100%;
+}
+
+.findButton{
+	width: 48%;
+	background-color: $greygreen;
+	border-radius: 5px;
+	height: 48px;
+	display: flex;
+	align-items: center;
+	justify-content : center;
+	cursor: pointer;
+}
+
+.findButton:hover{
+	background-color: $darkgrey;
+	color: white;
+}
+
+.selectPlace{
+	border: 1px solid $greygreen;
+	color: $darkgreygreen;
+	border-radius: 5px;
+	height: 2em;
+	text-indent: 10px;
+	width: 70%;
+}
+
+.modifyPlaceInput{
+	background-color: $greygreen;
+	color: white;
+	border : 0;
+	border-radius: 5px;
+	height: 2em;
+	text-indent: 10px;
+	width: 70%;
+}
+
+.modifyNameInput{
+	background-color: $darkgreygreen;
+}
+
+.newsInputContainer{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.popUpFindContent{
+	display: flex;
+	padding: 20px;
+	align-items: center;
+	width: 100%;
+	flex-direction: column;
+}
+
+.popUpFind{
+	width: 50%;
+    background-color: white;
+    margin-left: 25%;
+    border-radius: 5px;
+}

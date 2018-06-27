@@ -7,8 +7,8 @@ import { CSVLink, CSVDownload } from "react-csv";
 
 import { Link } from "react-router";
 
-import { HeaderAdmin } from "./layout.js";
-import data from "../data/data.js";
+import { HeaderAdmin, AdminMenu } from "./layout.js";
+//import data from "../data/data.js";
 
 import "../../css/admin.scss";
 import "../../css/stats.scss";
@@ -21,13 +21,14 @@ export class Stats extends React.Component {
             dataLitters: {},
             dataProducts: {},
             dataBenefits: {},
-            images: data.images
+            //images: data.images
         };
         this.constructDataLitters = this.constructDataLitters.bind(this);
         this.constructDataProducts = this.constructDataProducts.bind(this);
         this.constructDataBenefits = this.constructDataBenefits.bind(this);
         this.constructData = this.constructData.bind(this);
         this.exportData = this.exportData.bind(this);
+        this.importAll = this.importAll.bind(this);
     }
 
     componentDidMount() {
@@ -39,6 +40,12 @@ export class Stats extends React.Component {
             .catch(function (error) {
                 console.log(error);
             });
+    }
+
+    importAll(r) {
+        let images = {};
+        r.keys().map((item) => { images[item.replace("./", "")] = r(item); });
+        return images;
     }
 
     exportData() {
@@ -53,9 +60,9 @@ export class Stats extends React.Component {
     constructData(response) {
         var result = {};
         var packCorres = { fut: 1, unit: 1, pack: 6, carton: 12 };
-        var beers = data.beers;
+        var beers = ["ipa", "blanche", "blonde", "rousse", "brune", "noel"];
         beers.map(function (item) {
-            result[item.name.toLowerCase()] = { 33: 0, 75: 0, fut: 0, totalLitters: 0 };
+            result[item.toLowerCase()] = { 33: 0, 75: 0, fut: 0, totalLitters: 0 };
         }.bind(this));
         Object.keys(response).map(function (key) {
             var size = 30;
@@ -79,7 +86,7 @@ export class Stats extends React.Component {
         this.setState({ data: result });
         this.constructDataLitters();
         beers.map(function (item) {
-            this.constructDataProducts(item.name.toLowerCase());
+            this.constructDataProducts(item.toLowerCase());
         }.bind(this));
     }
 
@@ -125,6 +132,7 @@ export class Stats extends React.Component {
         var result = {};
         var labels = [];
         var insert = [];
+        //console.log(response);
         Object.keys(response).map(function (key) {
             let date = moment(response[key].date).format("MM/YY");
             if (!labels.includes(date)) {
@@ -154,16 +162,34 @@ export class Stats extends React.Component {
 
             labels: labels
         };
-
         this.setState({ dataBenefits: data });
     }
 
     render() {
+        const images = this.importAll(require.context("../../img/stats", false, /\.(png|jpe?g|svg)$/));
+        var screenSize =  screen.width;
+        var chartSize = 250;
+        var beerChartSize = 150;
+        if (screenSize < 1600) {
+            chartSize = 150;
+            beerChartSize = 125;
+        }
         return [
             <HeaderAdmin key="header"/>,
             <section className="statsContainer" key="content">
                 <div className="chartsContainer">
-                    <div className="adminHeader">STATISTIQUES</div>
+                    <div className="adminHeader" style={{ paddingRight: "20px" }}>
+                        <div>STATISTIQUES</div>
+                        <CSVLink
+                            data={this.exportData()}
+                            filename={"data_" + moment().format("DD_MM_YY") + ".csv"}
+                            className="exportButton"
+                            target="_blank"
+                            separator={";"}
+                        >
+                            Export des données
+                        </CSVLink>
+                    </div>
                     <div className="chartsContent">
                         <div className="leftChart">
                             <div className="chartRow">
@@ -172,7 +198,7 @@ export class Stats extends React.Component {
                                     <div className="litters">
                                         <Pie
                                             data={this.state.dataLitters}
-                                            height={250}
+                                            height={chartSize}
                                             options={{
                                                 legend: { display: false },
                                                 maintainAspectRatio: false
@@ -185,7 +211,7 @@ export class Stats extends React.Component {
                                     <div className="litters">
                                         <Pie
                                             data={this.state.dataLitters}
-                                            height={250}
+                                            height={chartSize}
                                             options={{
                                                 legend: { display: false },
                                                 maintainAspectRatio: false
@@ -199,7 +225,6 @@ export class Stats extends React.Component {
                                 <div className="benefits">
                                     <Bar
                                         data={this.state.dataBenefits}
-                                        width={200}
                                         height={200}
                                         options={{
                                             legend: { display: false },
@@ -219,10 +244,10 @@ export class Stats extends React.Component {
                                 <div className="productsChart">
                                     {Object.keys(this.state.dataProducts).map(function (key, index) {
                                         return (
-                                            <div className="productsChartImg" style={{ backgroundImage: "url(" + this.state.images[key].stats + ")" }} key={"chart" + index}>
+                                            <div className="productsChartImg" style={{ backgroundImage: "url(" + images[key + "_stats.png"] + ")" }} key={"chart" + index}>
                                                 <Doughnut
                                                     data={this.state.dataProducts[key]}
-                                                    height={150}
+                                                    height={beerChartSize}
                                                     options={{
                                                         legend: { display: false },
                                                         maintainAspectRatio: false,
@@ -236,29 +261,7 @@ export class Stats extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="adminActionContainer">
-                    <div className="adminAction">
-                        <div className="adminActionTitle">STOCKS</div>
-                        <img src={require("../../img/stock.png")} className="adminActionImg"/>
-                    </div>
-                    <Link to="/admin" className="adminAction">
-                        <div className="adminActionTitle">COMMANDES</div>
-                        <img src={require("../../img/basket.png")} className="adminActionImg"/>
-                    </Link>
-                    <div className="adminAction">
-                        <div className="adminActionTitle">CLIENTS</div>
-                        <img src={require("../../img/client.png")} className="adminActionImg"/>
-                    </div>
-                    <CSVLink
-                        data={this.exportData()}
-                        filename={"data_" + moment().format("DD_MM_YY") + ".csv"}
-                        className="exportButton"
-                        target="_blank"
-                        separator={";"}
-                    >
-                        EXPORT DES DONNEES
-                    </CSVLink>
-                </div>
+                <AdminMenu active="stats"/>
             </section>
         ];
     }

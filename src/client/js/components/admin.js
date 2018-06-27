@@ -7,7 +7,7 @@ import "../../css/admin.scss";
 
 import { Link } from "react-router";
 
-import { HeaderAdmin } from "./layout.js";
+import { HeaderAdmin, AdminMenu } from "./layout.js";
 
 export class Admin extends React.Component {
     constructor(props) {
@@ -168,20 +168,7 @@ export class Admin extends React.Component {
                         }.bind(this))}
                     </div>
                 </div>
-                <div className="adminActionContainer">
-                    <div className="adminAction">
-                        <div className="adminActionTitle">STOCKS</div>
-                        <img src={require("../../img/stock.png")} className="adminActionImg"/>
-                    </div>
-                    <Link to="/stats" className="adminAction">
-                        <div className="adminActionTitle">STATISTIQUES</div>
-                        <img src={require("../../img/stat.png")} className="adminActionImg"/>
-                    </Link>
-                    <div className="adminAction">
-                        <div className="adminActionTitle">CLIENTS</div>
-                        <img src={require("../../img/client.png")} className="adminActionImg"/>
-                    </div>
-                </div>
+                <AdminMenu active="command"/>
             </section>
         ];
     }

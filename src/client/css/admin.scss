@@ -1,4 +1,6 @@
 $darkgrey : #202325;
+$greygreen : #A6BFBF;
+$darkgreygreen : #3E4F4F;
 
 .adminContainer{
 	height: calc(100% - 115px);
@@ -30,6 +32,10 @@ $darkgrey : #202325;
     font-size: 1.5em;
     border-radius: 10px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 32px;
 }
 
 // .commandItem{
@@ -45,32 +51,33 @@ $darkgrey : #202325;
 }
 
 .adminAction{
-	width: 100%;
     background-color: $darkgrey;
+    width: calc(100% - 20px);
     color: white;
-    height: 28%;
+    height: 15%;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     cursor: pointer;
+    padding: 10px;
 }
 
 .exportButton{
-    width: 100%;
-    background-color: $darkgrey;
-    color: white;
-    height: 3em;
-    border-radius: 10px;
+    background-color: $greygreen;
+    color: $darkgrey;
+    border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     cursor: pointer;
+    padding: 5px 10px 5px 10px;
+    font-size: 0.8em;
 }
 
-.adminAction:hover, .exportButton:hover{
+.adminAction:hover, .exportButton:hover, .activeAdmin{
 	background-color: #546a67;
 }
 

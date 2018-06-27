@@ -2,7 +2,7 @@ import React from "react";
 import { SectionsContainer, ScrollToTopOnMount } from "react-fullpage";
 
 import { Beers } from "./beers.js";
-import { Bar } from "./bar.js";
+import { News } from "./news.js";
 import { Find } from "./find.js";
 import { Story } from "./story.js";
 import { Contact } from "./contact.js";
@@ -44,7 +44,7 @@ export class Fullpage extends React.Component {
         return (
             <SectionsContainer className="sectionContainer" {...options} scrollCallback={this.onScroll} activeSection={this.state.initialActiveSection}>
                 <Beers/>
-                <Bar/>
+                <News/>
                 <Find/>
                 <Story/>
                 <Contact/>

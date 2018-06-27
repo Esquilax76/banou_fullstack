@@ -16,6 +16,13 @@ export class Pay extends React.Component {
             delivery: 0
         };
         this.handleChange = this.handleChange.bind(this);
+        this.importAll = this.importAll.bind(this);
+    }
+
+    importAll(r) {
+        let images = {};
+        r.keys().map((item) => { images[item.replace("./", "")] = r(item); });
+        return images;
     }
 
     handleChange(e) {
@@ -23,7 +30,7 @@ export class Pay extends React.Component {
     }
 
     render() {
-        const images = data.images;
+        const images = this.importAll(require.context("../../img/shop", false, /\.(png|jpe?g|svg)$/));
         return [
             <header className="header" key="header">
                 <Link to="/" className="headerTitle">LA BANOU</Link>
@@ -42,7 +49,7 @@ export class Pay extends React.Component {
                         return (
                             <div className="commandRecapRow" key={index}>
                                 <div className="commandRecapItem">
-                                    <img src={images[item.name.replace(/\s+/g, "_").toLowerCase()][item.package]} className="recapItemImage"/>
+                                    <img src={images[item.name.replace(/\s+/g, "_").toLowerCase() + "_" + item.package + ".jpg"]} className="recapItemImage"/>
                                     <div style={{ display: "flex", flexDirection: "column" }}>
                                         <div>{this.state.basket[key].name}</div>
                                         <div className="commandRecapInfo">{item.details}</div>
@@ -82,7 +89,7 @@ export class Pay extends React.Component {
                 </div>
                 <StripeProvider apiKey="pk_test_syiPXjXdGnFGKn00cX6zJQ2Q" key="form">
                     <Elements>
-                        <PayForm/>
+                        <PayForm price={(parseFloat(this.state.delivery) + parseFloat(this.state.price)).toFixed(2)} basket={this.state.basket} delivery={this.state.delivery}/>
                     </Elements>
                 </StripeProvider>
             </div>
@@ -94,20 +101,77 @@ class _PayForm extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.sendCommand = this.sendCommand.bind(this);
+        this.getId = this.getId.bind(this);
     }
 
     handleSubmit(ev) {
         ev.preventDefault();
         this.props.stripe.createToken().then(payload => {
             console.log(payload);
-            axios.post("/api/proceedPay", { stripeToken: payload.token.id })
+            axios.post("/api/proceedPay", { stripeToken: payload.token.id, price: this.props.price })
                 .then(response => {
                     console.log(response);
+                    this.sendCommand();
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         });
+    }
+
+    getId(item) {
+        let result = item.name.toLowerCase() + "_";
+
+        const id = {
+            blonde_33: 1,
+            blonde_75: 2,
+            blonde_fut: 3,
+            ipa_33: 4,
+            ipa_75: 5,
+            ipa_fut: 6,
+            blanche_33: 7,
+            blanche_75: 8,
+            blanche_fut: 9,
+            rousse_33: 10,
+            rousse_75: 11,
+            rousse_fut: 12,
+            brune_33: 13,
+            brune_75: 14,
+            brune_fut: 15,
+            decouverte: 16,
+        };
+
+        if (item.package == "fut") {
+            result += "fut";
+        } else {
+            result += item.size;
+        }
+
+        if (item.name.replace(/\s+/g, "_").toLowerCase() == "pack_decouverte") {
+            result = "decouverte";
+        }
+
+        return (id[result]);
+    }
+
+    sendCommand() {
+        axios.post("/api/postCommand", { address: "ici", price: this.props.price, user: 25, delivery: this.props.delivery })
+            .then(response => {
+                var id = response.data.insertId;
+                this.props.basket.map(function (item) {
+                    axios.post("/api/postCommandItem", { command_id: id, quantity: item.quantity, package: item.package, size: item.size, price: parseFloat(item.price), product_id: parseInt(this.getId(item)) })
+                        .then(response2 => {
+                            console.log(response2);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }.bind(this));
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     render() {

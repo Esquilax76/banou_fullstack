@@ -1,0 +1,306 @@
+$darkgrey : #202325;
+$greygreen : #A6BFBF;
+$darkgreygreen : #3E4F4F;
+
+.stockContainer{
+	height: calc(100% - 115px);
+	width: 100%;
+	margin-top: 65px;
+	padding-top: 50px;
+	background-image: url("../img/background.png");
+	background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+}
+
+.stockItemsContainer{
+	display: flex;
+    flex-direction: column;
+    width: 75%;
+    background-color: white;
+    height: calc(100% - 50px);
+    border-radius: 10px;
+    margin-right: 3%;
+}
+
+.stockSectionContainer{
+	padding: 15px;
+	overflow-y: scroll; 
+	margin-bottom: 15px;
+}
+
+.stockImage{
+	height: 100px;
+}
+
+.stockItem{
+	display: flex;
+	width: 100%;
+	border-bottom : 1px solid $darkgrey;
+	padding: 10px 0 10px 0;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.stockItemDesc{
+	display: flex;
+	flex-direction: column;
+	width: 30%;
+	padding: 0 40px 0 10px;
+}
+
+.stockItemName{
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+.stockItemDescription{
+	text-align: justify;
+}
+
+.stockInputContainer{
+	width: 8%;
+	padding: 0 40px 0 40px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	height: 100px;
+}
+
+.stockInputText{
+	font-weight: bold;
+}
+
+.stockInputPrice{
+	background-color: $greygreen;
+	width: 100%;
+	text-align: center;
+}
+
+.inputStock{
+	width: 100%;
+	border: 1px solid $darkgrey;
+	border-radius: 5px;
+	height: 1.5em;
+	text-indent: 15px;
+	text-align: center;
+}
+
+.stockButtonsContainer{
+	width: 3em;
+	height: 100px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.stockButton{
+	width: 100%;
+	background-color: $greygreen;
+	border-radius: 5px;
+	height: 45%;
+	display: flex;
+	align-items: center;
+	justify-content : center;
+	cursor: pointer;
+}
+
+.stockButton:hover{
+	background-color: $darkgrey;
+	color: white;
+}
+
+.stockIcon{
+	font-size: 1.3em;
+}
+
+.popUpStock{
+	width: 60%;
+    background-color: white;
+    margin-left: 20%;
+    border-radius: 5px;
+}
+
+.popUpStockHeader{
+	background-color: $greygreen;
+	height: 2em;
+	line-height: 2em;
+	text-align: center;
+	font-weight: bold;
+	font-size: 1.5em;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.popUpContentHeader{
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+}
+
+.modifyProductRow{
+	display: flex;
+	flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+}
+
+.modifyProductDescription{
+	display: flex;
+	flex-direction: column;
+	width: 60%;
+}
+
+.modifyProductImages{
+    width: calc(40% - 20px);
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    justify-content: space-between;
+}
+
+.modifyProductInfo{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.modifyProductText{
+	width: 40%;
+	margin-bottom: 20px;
+	line-height: 1.5em;
+}
+
+.modifyProductSelect{
+	border : 1px solid $darkgrey;
+	border-radius: 5px;
+	height: 2em;
+	text-indent: 10px;
+	width: 60%;
+	margin-bottom: 20px;
+}
+
+.modifyProductInput{
+	background-color: $darkgrey;
+	color: white;
+	border : 1px solid $darkgrey;
+	border-radius: 5px;
+	height: 2em;
+	text-indent: 10px;
+	margin-bottom: 20px;
+}
+
+.modifyProductTextarea{
+	background-color: $greygreen;
+	border : 1px solid $darkgrey;
+	border-radius: 5px;
+	padding: 10px;
+	resize: none;
+	height: 13em;
+	margin-bottom: 20px;
+	padding-top: 10px;
+	font-family: inherit;
+}
+
+.modifyProductBeerInfo{
+	margin-left: 10px;
+	width: 70px;
+	background-color: $greygreen;
+	border : 1px solid $darkgrey;
+	border-radius: 5px;
+	height: 2em;
+	text-indent: 10px;
+}
+
+.modifyProductRadioContainer{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 20px;
+	width: calc(40% - 20px);
+    margin-left: 20px;
+}
+
+.modifyProductRadioText{
+	font-weight: bold;
+	font-size: 1.1em;
+	margin-bottom: 10px;
+}
+
+.modifyProductButton{
+	margin-left: auto;
+	background-color: $darkgreygreen;
+	color: white;
+	border-radius: 5px;
+	height: 2em;
+	display: flex;
+	align-items: center;
+	padding: 0 10px 0 10px;
+	font-size: 1.2em;
+	cursor: pointer;
+}
+
+.modifyProductButton:hover{
+	background-color: $darkgrey;
+}
+
+.label-file {
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    border: 2px solid $darkgrey;
+    height: calc(50% - 10px);
+    width: calc(50% - 10px);
+    margin-bottom: 10px;
+}
+
+.label-fileSolo {
+    height: calc(100% - 2em - 10px);
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.labelText{
+	font-size: 1.1em;
+	margin-bottom: 10px;
+	padding: 10px;
+	text-align: center;
+}
+
+.label-file:hover {
+    color: $darkgreygreen;
+    border: 2px solid $darkgreygreen;
+}
+
+.input-file {
+    display: none;
+}
+
+.inputIcon{
+	font-size: 30px;
+}
+
+.addHeader{
+	width: 48px;
+	background-color: $greygreen;
+	border-radius: 5px;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content : center;
+	cursor: pointer;
+	color: $darkgrey;
+	font-size: 0.8em;
+}
+
+.addHeader:hover{
+	background-color: white;
+}

@@ -3,8 +3,6 @@ import React from "react";
 import "../../css/story.scss";
 import data from "../data/data.js";
 
-import cuve from "../../img/cuve.jpg";
-
 export class Story extends React.Component {
     constructor(props) {
         super(props);

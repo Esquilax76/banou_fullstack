@@ -1,24 +1,41 @@
 import React from "react";
+import axios from "axios";
 
-import "../../css/bar.scss";
-import data from "../data/data.js";
+import "../../css/news.scss";
+//import data from "../data/data.js";
 
-export class Bar extends React.Component {
+export class News extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            news: data.barNews,
-            current: data.barNews[0],
+            //news: data.barNews,
+            //current: data.barNews[0],
+            news: [],
+            current: [],
             index: 0,
             changeOk: true
         };
 
         this.changeNews = this.changeNews.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.getNews = this.getNews.bind(this);
+        this.importAll = this.importAll.bind(this);
     }
 
     componentDidMount() {
-        this.interval = setInterval(this.changeNews, 7000);
+        this.interval = setInterval(this.changeNews, 3000);
+        this.getNews();
+    }
+
+    getNews() {
+        axios.get("/api/getActiveNews")
+            .then(response => {
+                //console.log(response);
+                this.setState({ news: response.data, current: response.data[0] });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     changeNews() {
@@ -26,18 +43,25 @@ export class Bar extends React.Component {
             let index = this.state.index;
             let max = this.state.news.length;
             if (index === max - 1) {
-                this.setState({ index: 0, current: data.barNews[0] });
+                this.setState({ index: 0, current: this.state.news[0] });
             } else {
-                this.setState({ index: this.state.index + 1, current: data.barNews[this.state.index + 1] });
+                this.setState({ index: this.state.index + 1, current: this.state.news[this.state.index + 1] });
             }
         }
     }
 
     handleChange(index) {
-        this.setState({ index: index, current: data.barNews[index], changeOk: false });
+        this.setState({ index: index, current: this.state.news[index], changeOk: false });
+    }
+
+    importAll(r) {
+        let images = {};
+        r.keys().map((item) => { images[item.replace("./", "")] = r(item); });
+        return images;
     }
 
     render() {
+        const images = this.importAll(require.context("../../img/news", false, /\.(png|jpe?g|svg)$/));
         return (
             <div className="barContainer">
                 <div className="barContent">
@@ -64,21 +88,23 @@ export class Bar extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="barImage" style={{ backgroundImage: "url(" + this.state.current.image + ")" }}>
+                <div className="barImage" style={{ backgroundImage: "url(" + images[this.state.current.image] + ")" }}>
                     <div className="barNewsNav">
                         {this.state.news.map(function (item, index) {
-                            return (
-                                <div
-                                    key={index}
-                                    className={"barNewsButton " + (this.state.index === index ? "activeNav" : "nonActiveNav")}
-                                    onClick={() => this.handleChange(index)}
-                                />
-                            );
+                            //if (item.active) {
+                                return (
+                                    <div
+                                        key={index}
+                                        className={"barNewsButton " + (this.state.index === index ? "activeNav" : "nonActiveNav")}
+                                        onClick={() => this.handleChange(index)}
+                                    />
+                                );
+                            //}
                         }.bind(this))}
                     </div>
                     <div className="barNews">
                         <div className="barNewsTitle">{this.state.current.title}</div>
-                        <div className="barNewsDesc">{this.state.current.desc}</div>
+                        <div className="barNewsDesc">{this.state.current.description}</div>
                     </div>
                 </div>
             </div>

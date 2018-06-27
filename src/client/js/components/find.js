@@ -3,7 +3,7 @@ import { withGoogleMap, withScriptjs, GoogleMap, Marker, InfoWindow } from "reac
 import { compose, withProps, withStateHandlers } from "recompose";
 
 import "../../css/find.scss";
-import data from "../data/data.js";
+import axios from "axios";
 
 import { Link } from "react-router";
 
@@ -41,7 +41,7 @@ const MyMapComponent = compose(
                 image = pictoMicrob;
             }
             return (
-                <Marker key={index} position={{ lat: item.latitude, lng: item.longitude }} icon={ image } onClick={() => props.onToggleOpen(index)}>
+                <Marker key={index} position={{ lat: item.coordinates.lat, lng: item.coordinates.lng }} icon={ image } onClick={() => props.onToggleOpen(index)}>
                     {(props.isOpen == index) && <InfoWindow onCloseClick={() => props.onToggleOpen(-1)}>
                         <div className="infoWindow">
                             <div className="infoWindowRow">
@@ -58,7 +58,7 @@ const MyMapComponent = compose(
                             </div>
                             <div className="infoWindowRow">
                                 <FontAwesomeIcon icon={faFacebookClock} className="infoIcon"/>
-                                <span>{item.time}</span>
+                                <span>{item.opening}</span>
                             </div>
                         </div>
                     </InfoWindow>}
@@ -72,14 +72,66 @@ export class Find extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            places: data.find,
-            markers: data.map,
+            places: [],
+            cities: [],
             zoom: 13,
             lat: 45.164172,
             lng: 1.537178,
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.getCities = this.getCities.bind(this);
+        this.getCities = this.getCities.bind(this);
+    }
+
+    componentDidMount() {
+        this.getPlaces();
+    }
+
+    getPlaces() {
+        var places = [];
+        var cities = [];
+        axios.get("/api/getPlaces")
+            .then(response => {
+                response.data.map(function (item) {
+                    let place = item;
+                    axios.get("https://maps.google.com/maps/api/geocode/json?address=" + item.address.split(" ").join("+") + "&key=AIzaSyBfx9Bh1qVZY_QMAXFocqwoDXek4ck0714")
+                        .then(response2 => {
+                            place.coordinates = response2.data.results[0].geometry.location;
+                            places.push(place);
+                            let city = response2.data.results[0].address_components[2].long_name;
+                            if (cities.indexOf(city) === -1) {
+                                cities.push(city);
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }.bind(this));
+                this.setState({ places: places, citiesTmp: cities });
+                setTimeout(() => { this.getCities(); }, 500);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    getCities() {
+        let result = [];
+        this.state.citiesTmp.map(function (item) {
+            axios.get("https://maps.google.com/maps/api/geocode/json?address=" + item + "&key=AIzaSyBfx9Bh1qVZY_QMAXFocqwoDXek4ck0714")
+                .then(response => {
+                    var city = {
+                        name: item,
+                        coordinates: response.data.results[0].geometry.location
+                    };
+                    result.push(city);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }.bind(this));
+        setTimeout(() => { this.setState({ cities: result }); }, 500);
     }
 
     handleChange(e) {
@@ -97,7 +149,7 @@ export class Find extends React.Component {
                         <MyMapComponent
                             containerElement={<div className="fullHeight" />}
                             mapElement={<div className="fullHeight" />}
-                            markers={this.state.markers}
+                            markers={this.state.places}
                             zoom={this.state.zoom}
                             lat={this.state.lat}
                             lng={this.state.lng}
@@ -111,9 +163,9 @@ export class Find extends React.Component {
                         <div className="selectCityContainer">
                             <select className="selectCity" defaultValue="nothing" onChange={(e) => this.handleChange(e)}>
                                 <option value="nothing" disabled>Sélectionnez une ville</option>
-                                {this.state.places.map(function (item, index) {
+                                {this.state.cities.map(function (item, index) {
                                     return (
-                                        <option key={index} value={item.latitude + "_" + item.longitude}>{item.name}</option>
+                                        <option key={index} value={item.coordinates.lat + "_" + item.coordinates.lng}>{item.name}</option>
                                     );
                                 }.bind(this))}
                             </select>

@@ -80,10 +80,6 @@ a{
 	align-items: center;
 }
 
-
-
-
-
 .links{
 	width: 40px;
 	display: flex;
@@ -111,6 +107,15 @@ a{
 
 .creditsButton:hover{
 	color: grey;
+}
+
+.flex{
+	display: flex;
+	align-items: center;
+}
+
+.bold{
+	font-weight: bold;
 }
 
 /* Underline Reveal */

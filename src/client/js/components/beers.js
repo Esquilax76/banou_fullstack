@@ -1,8 +1,8 @@
 import React from "react";
-import axios from 'axios';
+import axios from "axios";
 
 import "../../css/beers.scss";
-import data from "../data/data.js";
+//import data from "../data/data.js";
 
 export class Beers extends React.Component {
     constructor(props) {
@@ -10,15 +10,36 @@ export class Beers extends React.Component {
         this.state = {
             opacity: 0,
             positions: ["calc(50% - 600px)", "calc(50% - 400px)", "calc(50% - 200px)", "calc(50%)", "calc(50% + 200px)", "calc(50% + 400px)"],
-            active: data.beers[0],
+            active: { name: "IPA", desc: "", ibu: "", ebc: "", alcool: "" },
             details: 0,
-            beers: data.beers,
+            beers: [],
             current: { position: 0, name: "IPA" },
-            images: data.images
         };
         this.showDetails = this.showDetails.bind(this);
         this.hideDetails = this.hideDetails.bind(this);
         this.findBeer = this.findBeer.bind(this);
+        this.getData = this.getData.bind(this);
+        this.importAll = this.importAll.bind(this);
+    }
+
+    importAll(r) {
+        let images = {};
+        r.keys().map((item) => { images[item.replace("./", "")] = r(item); });
+        return images;
+    }
+
+    componentDidMount() {
+        this.getData();
+    }
+
+    getData() {
+        axios.get("/api/getBeers")
+            .then(response => {
+                this.setState({ beers: response.data });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     findBeer(name) {
@@ -54,6 +75,7 @@ export class Beers extends React.Component {
     }
 
     render() {
+        const images = this.importAll(require.context("../../img/home", false, /\.(png|jpe?g|svg)$/));
         return (
             <section className="beersContainer">
                 <div className="pageTitle">Découvrez nos bières artisanales</div>
@@ -65,17 +87,17 @@ export class Beers extends React.Component {
                                 onMouseEnter={() => this.showDetails(index, item.name)}
                                 onMouseLeave={this.hideDetails}
                                 className="bottle"
-                                style={{ backgroundImage: "url(" + this.state.images[item.name.toLowerCase()]["bottle"] + ")", left: this.state.positions[index] }}
+                                style={{ backgroundImage: "url(" + images["bouteille_" + item.name.toLowerCase() + ".png"]  + ")", left: this.state.positions[index] }}
                             />
                         );
                     }.bind(this))}
                     <div
                         className="description"
                         onMouseEnter={() => this.showDetails(this.state.current.position, this.state.current.name)}
-                        style={{ left: this.state.details, opacity: this.state.opacity, backgroundImage: "url(" + this.state.images[this.state.current.name.toLowerCase()]["glass"] + ")" }}
+                        style={{ left: this.state.details, opacity: this.state.opacity, backgroundImage: "url(" + images["verre_" + this.state.current.name.toLowerCase() + ".png"]  + ")" }}
                     >
                         <div className="desc">
-                            <div className="descTitle">{this.state.active.name}</div>
+                            <div className="descTitle">{this.state.active.name.toUpperCase()}</div>
                             <div className="descText">{this.state.active.description}</div>
                             <div className="descAlcool">
                                 <div className="little">ALCOOL</div>

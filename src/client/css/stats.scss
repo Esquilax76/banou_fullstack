@@ -84,3 +84,18 @@
 	width: 100%;
     display: flex;
 }
+
+@media screen and (max-width: 1600px)
+{
+    .chartTitle{
+        margin-bottom: 20px;
+    }
+
+    .chartTitleDark{
+        margin-bottom: 20px;
+    }
+
+    .productsChartImg{
+        margin-bottom: 20px;
+    }
+}

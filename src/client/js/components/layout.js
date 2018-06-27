@@ -72,4 +72,33 @@ class Layout extends React.Component {
     }
 }
 
+export class AdminMenu extends React.Component {
+    render() {
+        return (
+            <div className="adminActionContainer">
+                <Link to="/admin" className={(this.props.active == "command") ? "adminAction activeAdmin" : "adminAction"}>
+                    <div className="adminActionTitle">COMMANDES</div>
+                    <img src={require("../../img/basket.png")} className="adminActionImg"/>
+                </Link>
+                <Link to="/stock" className={(this.props.active == "stock") ? "adminAction activeAdmin" : "adminAction"}>
+                    <div className="adminActionTitle">STOCKS</div>
+                    <img src={require("../../img/stock.png")} className="adminActionImg"/>
+                </Link>
+                <Link to="/stats" className={(this.props.active == "stats") ? "adminAction activeAdmin" : "adminAction"}>
+                    <div className="adminActionTitle">STATISTIQUES</div>
+                    <img src={require("../../img/stat.png")} className="adminActionImg"/>
+                </Link>
+                <Link to="/newsadmin" className={(this.props.active == "news") ? "adminAction activeAdmin" : "adminAction"}>
+                    <div className="adminActionTitle">NEWS</div>
+                    <img src={require("../../img/news.png")} className="adminActionImg"/>
+                </Link>
+                <Link to="/findadmin" className={(this.props.active == "find") ? "adminAction activeAdmin" : "adminAction"}>
+                    <div className="adminActionTitle">POINTS DE VENTE</div>
+                    <img src={require("../../img/find.png")} className="adminActionImg"/>
+                </Link>
+            </div>
+        );
+    }
+}
+
 export default Layout;
