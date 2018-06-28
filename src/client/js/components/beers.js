@@ -87,14 +87,14 @@ export class Beers extends React.Component {
                                 onMouseEnter={() => this.showDetails(index, item.name)}
                                 onMouseLeave={this.hideDetails}
                                 className="bottle"
-                                style={{ backgroundImage: "url(" + images["bouteille_" + item.name.toLowerCase() + ".png"]  + ")", left: this.state.positions[index] }}
+                                style={{ backgroundImage: "url(" + images["bouteille_" + item.name.toLowerCase().replace(" ", "_") + ".png"]  + ")", left: this.state.positions[index] }}
                             />
                         );
                     }.bind(this))}
                     <div
                         className="description"
                         onMouseEnter={() => this.showDetails(this.state.current.position, this.state.current.name)}
-                        style={{ left: this.state.details, opacity: this.state.opacity, backgroundImage: "url(" + images["verre_" + this.state.current.name.toLowerCase() + ".png"]  + ")" }}
+                        style={{ left: this.state.details, opacity: this.state.opacity, backgroundImage: "url(" + images["verre_" + this.state.current.name.toLowerCase().replace(" ", "_") + ".png"]  + ")" }}
                     >
                         <div className="desc">
                             <div className="descTitle">{this.state.active.name.toUpperCase()}</div>

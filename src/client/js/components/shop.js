@@ -17,7 +17,6 @@ export class Shop extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            //products: data.shop,
             products: [],
             basket: [],
             popup: "hidden",
@@ -90,13 +89,14 @@ export class Shop extends React.Component {
             details = this.state.size + "cl - " + corres[this.state.package];
         }
         let newItem = {
-            name: this.state.currentChoice.name.toUpperCase(),
+            name: this.state.currentChoice.name,
             quantity: this.state.quantity,
             price: this.findPrice("all"),
             id: this.state.currentChoice.name + " - " + details,
             package: this.state.package,
             size: this.state.size,
             details: details,
+            product_id: this.state.currentChoice.id,
             //unit: this.state.currentChoice.price
             unit: this.findPrice("unit"),
         };
@@ -173,44 +173,6 @@ export class Shop extends React.Component {
         }
     }
 
-    // getPrice() {
-    //     console.log(this.state.currentChoice)
-    //     let rent = 0;
-    //     if (this.state.rent === "yes" && this.state.package === "fut") {
-    //         rent = 15;
-    //     }
-
-    //     if (this.state.size == "fut") {
-    //         return (this.state.currentChoice["price_fut"].toFixed(2) + "€");
-    //     }
-
-    //     var number = 1;
-    //     var price = 0;
-    //     if (this.state.package == "pack") {
-    //         number = 6;
-    //     } else if (this.state.package == "carton") {
-    //         number = 12;
-    //     }
-
-    //     if (this.state.size == "33") {
-    //         price = this.state.currentChoice["price_33"];
-    //     } else if (this.state.size == "75") {
-    //         price = this.state.currentChoice["price_75"];
-    //     }
-
-    //     //return (parseInt(this.state.quantity) * parseFloat(this.state.currentChoice.publicPrice[this.state.package][this.state.size]) + rent).toFixed(2) + "€";
-    //     //return (12).toFixed(2) + "€";
-    //     return (parseInt(this.state.quantity) * number * price + rent).toFixed(2) + "€";
-    // }
-
-    // getUnitPrice() {
-    //     let rent = 0;
-    //     if (this.state.rent === "yes" && this.state.package === "fut") {
-    //         rent = 15;
-    //     }
-    //     return (parseFloat(this.state.currentChoice.publicPrice[this.state.package][this.state.size]) + rent).toFixed(2) + "€";
-    // }
-
     addRent() {
         if (this.state.package === "fut" && this.state.rent === "yes") {
             return "+ 15.00€";
@@ -260,10 +222,9 @@ export class Shop extends React.Component {
                     {this.state.products.map(function (item, index) {
                         return (
                             <div className="shopItem" key={index} onClick={() => this.showPopUp(item)}>
-                                <img className="shopItemImage" src={images[item.name.replace(/\s+/g, "_").toLowerCase() + "_unit.jpg"]}/>
+                                <img className="shopItemImage" src={images[item.name.replace(/\s+/g, "_").replace("é", "e").toLowerCase() + "_unit.jpg"]}/>
                                 <div className="shopItemTitle">{item.name.toUpperCase()}</div>
-                                {/*<div className="shopItemPrice">{item.publicPrice[this.state.package][this.state.size]}</div>*/}
-                                <div className="shopItemPrice">{item.price.toFixed(2)} €</div>
+                                <div className="shopItemPrice">{item.price_33.toFixed(2)} €</div>
                             </div>
                         );
                     }.bind(this))}
@@ -274,11 +235,11 @@ export class Shop extends React.Component {
                     <div className="close" onClick={() => this.hidePopUp()}>+</div>
                     <div className="popUpHeader">FICHE DESCRIPTIVE PRODUIT</div>
                     <div className="popUpContent">
-                        <img src={images[this.state.currentChoice.name.replace(/\s+/g, "_").toLowerCase() + "_" + this.state.package + ".jpg"]} className="popUpImage"/>
+                        <img src={images[this.state.currentChoice.name.replace(/\s+/g, "_").replace("é", "e").toLowerCase() + "_" + this.state.package + ".jpg"]} className="popUpImage"/>
                         <div className="popUpDescription">
                             <div className="popUpTitle">{this.state.currentChoice.name.toUpperCase()}</div>
                             <div className="popUpText" dangerouslySetInnerHTML={{ __html: this.state.currentChoice.description }}></div>
-                            {this.state.currentChoice.name.toUpperCase() !== "PACK DECOUVERTE" &&
+                            {this.state.currentChoice.isbeer == 1 &&
                                 <div className="popUpinput">
                                     <div className="inputLabel">Conditionnement</div>
                                     <select
@@ -293,7 +254,7 @@ export class Shop extends React.Component {
                                     </select>
                                 </div>
                             }
-                            {this.state.package !== "fut" &&
+                            {(this.state.package !== "fut" && this.state.currentChoice.isbeer == 1) &&
                                 <div className="popUpinput">
                                     <div className="inputLabel">Taille</div>
                                     <select
@@ -324,7 +285,6 @@ export class Shop extends React.Component {
                                 />
                             </div>
                             <div className="popUpPrice">
-                                {/*this.getPrice()}<span className="popUpPriceDetail"> ( {this.state.currentChoice.publicPrice[this.state.package][this.state.size]} x {this.state.quantity} {this.addRent()} )</span>*/}
                                 {this.findPrice("all") + " €"}<span className="popUpPriceDetail"> ( {this.findPrice("unit") + " €"} x {this.state.quantity} {this.addRent()})</span>
                             </div>
                             <div className="addToBasket" onClick={() => this.addToBasket()}>AJOUTER AU PANIER</div>
@@ -343,9 +303,9 @@ export class Shop extends React.Component {
                             {this.state.basket.map(function (item, index) {
                                 return (
                                     <div key={index} className="basketItem">
-                                        <img src={images[item.name.replace(/\s+/g, "_").toLowerCase() + "_" + item.package + ".jpg"]} className="basketItemImage"/>
+                                        <img src={images[item.name.replace(/\s+/g, "_").replace("é", "e").toLowerCase() + "_" + item.package + ".jpg"]} className="basketItemImage"/>
                                         <div className="basketItemDesc">
-                                            <div className="basketItemTitle">{item.name}</div>
+                                            <div className="basketItemTitle">{item.name.toUpperCase()}</div>
                                             <div className="basketItemInfo">{item.details}</div>
                                             <div className="basketItemInfo">{"QUANTITE : " + item.quantity}</div>
                                             <div className="basketQuantity">

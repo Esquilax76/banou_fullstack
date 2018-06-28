@@ -109,10 +109,19 @@ export class NewsAdmin extends React.Component {
         axios.post("/api/uploadNewsFile", formData)
             .then((result) => {
                 console.log(result);
-                axios.post("/api/postNews", { title: this.state.current.title, description: this.state.current.description, image: this.state.selectedFile.name })
-                    .then((result2) => {
-                        console.log(result2);
-                    });
+                if (this.state.action == "Créer une News") {
+                    axios.post("/api/postNews", { title: this.state.current.title, description: this.state.current.description, image: this.state.selectedFile.name })
+                        .then((result2) => {
+                            this.setState({ popup: "hidden" });
+                            this.getData();
+                        });
+                } else {
+                    axios.post("/api/patchNews", { id: this.state.current.id, title: this.state.current.title, description: this.state.current.description, image: this.state.selectedFile.name })
+                        .then((result2) => {
+                            this.setState({ popup: "hidden" });
+                            this.getData();
+                        });
+                }
             });
     }
 

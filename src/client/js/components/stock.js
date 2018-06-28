@@ -206,7 +206,6 @@ class PopUpBeer extends React.Component {
         //formData.append('description', "test");
         formData.append("selectedFile", selectedFile);
         console.log(formData);
-
         axios.post("/api/uploadFile", formData)
             .then((result) => {
                 console.log(result);

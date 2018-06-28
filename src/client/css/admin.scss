@@ -145,6 +145,11 @@ $darkgreygreen : #3E4F4F;
 	border-radius: 5px;
 }
 
+.adminIcon{
+    font-size: 1.2em;
+    color: $darkgreygreen;
+}
+
 table {
     border-collapse: collapse;
     table-layout: fixed;
@@ -191,7 +196,8 @@ table td:last-child {
 col:nth-of-type(1) {width:10%;}
 col:nth-of-type(2) {width:3%;}
 col:nth-of-type(3) {width:12%;}
-col:nth-of-type(4) {width:22%;}
-col:nth-of-type(5) {width:20%;}
-col:nth-of-type(6) {width:6%;}
-col:nth-of-type(7) {width:15%;}
+col:nth-of-type(4) {width:19%;}
+col:nth-of-type(5) {width:5%;}
+col:nth-of-type(6) {width:18%;}
+col:nth-of-type(7) {width:6%;}
+col:nth-of-type(8) {width:15%;}

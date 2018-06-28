@@ -9,6 +9,10 @@ import { Link } from "react-router";
 
 import { HeaderAdmin, AdminMenu } from "./layout.js";
 
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import faDelivery from "@fortawesome/fontawesome-free-solid/faTruck";
+import faPickup from "@fortawesome/fontawesome-free-solid/faHands";
+
 export class Admin extends React.Component {
     constructor(props) {
         super(props);
@@ -20,6 +24,7 @@ export class Admin extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.getData = this.getData.bind(this);
         this.sectionFocus = this.sectionFocus.bind(this);
+        this.getName = this.getName.bind(this);
     }
 
     componentDidMount() {
@@ -47,6 +52,7 @@ export class Admin extends React.Component {
                 status: response[key].status,
                 price: response[key].total_price,
                 id: response[key].command_id,
+                delivery: response[key].delivery,
             };
         }.bind(this));
         Object.keys(response).map(function (key) {
@@ -55,6 +61,7 @@ export class Admin extends React.Component {
                 package: response[key].package,
                 name: response[key].name,
                 size: response[key].size,
+                isbeer: response[key].isbeer
             });
         }.bind(this));
         this.setState({ commands: result });
@@ -77,7 +84,7 @@ export class Admin extends React.Component {
         this.setState({ sizes: sizes });
     }
 
-    render() {
+    getName(item) {
         const corres = {
             unit: "A l'unité",
             pack: "Pack de 6",
@@ -85,6 +92,14 @@ export class Admin extends React.Component {
             fut: "Fût"
         };
 
+        if (item.isbeer) {
+            return (item.quantity + " " + corres[item.package] + " " + item.name.toUpperCase() + " " + item.size);
+        } else {
+            return (item.quantity + " " + item.name.toUpperCase());
+        }
+    }
+
+    render() {
         const status = [["received"], ["preparing"], ["finished", "sent"]];
         const titles = ["Nouvelles commandes", "Commandes en cours", "Commandes terminées"];
         const colors = { received: "#b2c8ca", preparing: "#739291", sent: "#546a67", finished: "grey" };
@@ -114,6 +129,7 @@ export class Admin extends React.Component {
                                                 <col/>
                                                 <col/>
                                                 <col/>
+                                                <col/>
                                             </colgroup>
                                             <tbody>
                                                 <tr>
@@ -121,6 +137,7 @@ export class Admin extends React.Component {
                                                     <th>ID</th>
                                                     <th>Client</th>
                                                     <th>Adresse</th>
+                                                    <th>Livraison</th>
                                                     <th>Commande</th>
                                                     <th>Prix</th>
                                                     <th>Status</th>
@@ -133,11 +150,12 @@ export class Admin extends React.Component {
                                                                 <td>{item.id}</td>
                                                                 <td>{item.client}</td>
                                                                 <td>{item.address}</td>
+                                                                <td><FontAwesomeIcon icon={(item.delivery) ? faDelivery : faPickup} className="adminIcon"/></td>
                                                                 <td>
                                                                     {item.items.map(function (item2, index2) {
                                                                         return (
                                                                             <div className="commandItem" key={"1-2-" + index2}>
-                                                                                {item2.quantity} {corres[item2.package]} {item2.name.toUpperCase()} {item2.size}
+                                                                                {this.getName(item2)}
                                                                             </div>
                                                                         );
                                                                     }.bind(this))}

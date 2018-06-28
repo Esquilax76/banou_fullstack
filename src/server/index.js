@@ -30,32 +30,39 @@ app.use(function (req, res, next) {
 /***** PRODUCTS *****/
 
 app.get("/api/getBeers", function (req, res) {
-    res.locals.connection.query("SELECT * from beer WHERE isbeer = 1", function (error, results) {
+    res.locals.connection.query("SELECT * from product WHERE isbeer = 1", function (error, results) {
         if (error) { throw error; }
         res.send(JSON.stringify(results));
     });
 });
 
 app.get("/api/getProducts", function (req, res) {
-    res.locals.connection.query("SELECT * from beer", function (error, results) {
+    res.locals.connection.query("SELECT * from product", function (error, results) {
         if (error) { throw error; }
         res.send(JSON.stringify(results));
     });
 });
 
 app.post("/api/patchProductActive", function (req, res) {
-    res.locals.connection.query("UPDATE beer SET active = ? WHERE id = ?", [req.body.active, req.body.id],  function (error, results) {
+    res.locals.connection.query("UPDATE product SET active = ? WHERE id = ?", [req.body.active, req.body.id],  function (error, results) {
         if (error) { throw error; }
         res.send(results);
     });
 });
 
 app.get("/api/getProductById", function (req, res) {
-    res.locals.connection.query("SELECT * from beer WHERE id = ?", [req.query.id], function (error, results) {
+    res.locals.connection.query("SELECT * from product WHERE id = ?", [req.query.id], function (error, results) {
         if (error) { throw error; }
         res.send(JSON.stringify(results));
     });
 });
+
+// app.get("/api/getProductByName", function (req, res) {
+//     res.locals.connection.query("SELECT * from product WHERE name = ?", [req.query.name], function (error, results) {
+//         if (error) { throw error; }
+//         res.send(JSON.stringify(results));
+//     });
+// });
 
 /***** NEWS *****/
 
@@ -90,6 +97,14 @@ app.get("/api/getNewsById", function (req, res) {
 app.post("/api/postNews", function (req, res) {
     var post = { title: req.body.title, active: 1, description: req.body.description, image: req.body.image };
     res.locals.connection.query("INSERT INTO news SET ?", post, function (error, results) {
+        if (error) { throw error; }
+        res.send(results);
+    });
+});
+
+app.post("/api/patchNews", function (req, res) {
+    var post = { title: req.body.title, active: 1, description: req.body.description, image: req.body.image };
+    res.locals.connection.query("UPDATE news SET ? WHERE id = ?", [post, req.body.id], function (error, results) {
         if (error) { throw error; }
         res.send(results);
     });
@@ -211,9 +226,7 @@ app.post("/api/sendMail", function (req) {
 /***********************************************************/
 
 app.post("/api/proceedPay", function (req, res) {
-    // Token is created using Checkout or Elements!
-    // Get the payment token ID submitted by the form:
-    const token = req.body.stripeToken; // Using Express
+    const token = req.body.stripeToken;
 
     const charge = stripe.charges.create({
         amount: parseFloat(req.body.price) * 100,

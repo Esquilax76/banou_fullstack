@@ -49,9 +49,9 @@ export class Pay extends React.Component {
                         return (
                             <div className="commandRecapRow" key={index}>
                                 <div className="commandRecapItem">
-                                    <img src={images[item.name.replace(/\s+/g, "_").toLowerCase() + "_" + item.package + ".jpg"]} className="recapItemImage"/>
+                                    <img src={images[item.name.replace(/\s+/g, "_").replace("é", "e").toLowerCase() + "_" + item.package + ".jpg"]} className="recapItemImage"/>
                                     <div style={{ display: "flex", flexDirection: "column" }}>
-                                        <div>{this.state.basket[key].name}</div>
+                                        <div>{this.state.basket[key].name.toUpperCase()}</div>
                                         <div className="commandRecapInfo">{item.details}</div>
                                     </div>
                                 </div>
@@ -102,7 +102,6 @@ class _PayForm extends React.Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.sendCommand = this.sendCommand.bind(this);
-        this.getId = this.getId.bind(this);
     }
 
     handleSubmit(ev) {
@@ -120,47 +119,12 @@ class _PayForm extends React.Component {
         });
     }
 
-    getId(item) {
-        let result = item.name.toLowerCase() + "_";
-
-        const id = {
-            blonde_33: 1,
-            blonde_75: 2,
-            blonde_fut: 3,
-            ipa_33: 4,
-            ipa_75: 5,
-            ipa_fut: 6,
-            blanche_33: 7,
-            blanche_75: 8,
-            blanche_fut: 9,
-            rousse_33: 10,
-            rousse_75: 11,
-            rousse_fut: 12,
-            brune_33: 13,
-            brune_75: 14,
-            brune_fut: 15,
-            decouverte: 16,
-        };
-
-        if (item.package == "fut") {
-            result += "fut";
-        } else {
-            result += item.size;
-        }
-
-        if (item.name.replace(/\s+/g, "_").toLowerCase() == "pack_decouverte") {
-            result = "decouverte";
-        }
-
-        return (id[result]);
-    }
-
     sendCommand() {
         axios.post("/api/postCommand", { address: "ici", price: this.props.price, user: 25, delivery: this.props.delivery })
             .then(response => {
                 var id = response.data.insertId;
                 this.props.basket.map(function (item) {
-                    axios.post("/api/postCommandItem", { command_id: id, quantity: item.quantity, package: item.package, size: item.size, price: parseFloat(item.price), product_id: parseInt(this.getId(item)) })
+                    axios.post("/api/postCommandItem", { command_id: id, quantity: item.quantity, package: item.package, size: item.size, price: parseFloat(item.price), product_id: item.product_id })
                         .then(response2 => {
                             console.log(response2);
                         })
