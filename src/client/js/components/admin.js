@@ -170,7 +170,7 @@ export class Admin extends React.Component {
                                                                     >
                                                                         <option value="received">En cours de traitement</option>
                                                                         <option value="preparing">En prépraration</option>
-                                                                        <option value="sent">Envoyée</option>
+                                                                        <option value="sent">Envoyée/récupérée</option>
                                                                         <option value="finished">Terminée</option>
                                                                     </select>
                                                                 </td>

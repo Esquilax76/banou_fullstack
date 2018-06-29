@@ -33,6 +33,22 @@ $greygreen : #A6BFBF;
 	background-color: $darkgrey;
 	cursor: pointer;
     transition: 0.3s;
+    position: relative;
+}
+
+.shopItemDisabled{
+	background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    color: white;
+    font-size: 1.3em;
+    display: flex;
+    align-items: center;
+    text-align: center;
 }
 
 .shopItem:hover{
@@ -52,7 +68,7 @@ $greygreen : #A6BFBF;
 .shopItemPrice{
 	font-size: 0.8em;
 	padding: 10px 0 10px 10px;
-	color: #6E6968;
+	color: #b7b6b6;
 }
 
 .disable{
@@ -217,7 +233,7 @@ $greygreen : #A6BFBF;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: calc(100% - 85px);
+    height: calc(100% - 65px);
 }
 
 .basketItem{
@@ -311,4 +327,21 @@ $greygreen : #A6BFBF;
 
 .disableButton{
 	background-color: grey;
+}
+
+.basketTotalInfo{
+	font-size: 0.6em;
+	font-weight: normal;
+}
+
+.basketTotalInfoPopup{
+	bottom: 10px;
+	right: calc(25% + 10px);
+    font-size: 0.8em;
+    font-weight: normal;
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    padding: 10px;
+    text-align: justify;
 }

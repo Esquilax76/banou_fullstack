@@ -1,9 +1,11 @@
+var config = require("../../config.js");
+
 const express = require("express");
 const os = require("os");
 const bodyParser = require("body-parser");
 var nodemailer = require("nodemailer");
 var sgTransport = require("nodemailer-sendgrid-transport");
-var stripe = require("stripe")("sk_test_InomwOUxGWocLPppEHI4e3sH");
+var stripe = require("stripe")(config.stripe_secret_key);
 var multer = require("multer");
 var path = require("path");
 
@@ -18,10 +20,10 @@ var mysql = require("mysql");
 //Database connection
 app.use(function (req, res, next) {
     res.locals.connection = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "banou"
+        host: config.db_host,
+        user: config.db_user,
+        password: config.password,
+        database: config.db_name
     });
     res.locals.connection.connect();
     next();
@@ -199,9 +201,9 @@ app.listen(8080, () => console.log("Listening on port 8080!"));
 app.post("/api/sendMail", function (req) {
     var options = {
         auth: {
-            api_user: "Clement_Routier",
+            api_user: config.sendgrid_api_user,
             //api_key: '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'
-            api_key: "BFDlet69!"
+            api_key: config.sendgrid_api_key
         }
     };
 
@@ -209,7 +211,7 @@ app.post("/api/sendMail", function (req) {
 
     var email = {
         from: req.body.email,
-        to: "routierclement@gmail.com",
+        to: config.sendgrid_mail,
         subject: "Mail de " + req.body.name + " via le site banou",
         html: req.body.message.replace("\n", "<br/>"),
     };
@@ -234,7 +236,7 @@ app.post("/api/proceedPay", function (req, res) {
         description: "Payement en ligne sur le site labanou.com",
         source: token,
         statement_descriptor: "La Banou",
-        receipt_email: "routierclement@gmail.com",
+        receipt_email: config.sendgrid_mail,
     });
 
     res.send(200);

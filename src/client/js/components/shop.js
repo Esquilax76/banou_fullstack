@@ -10,6 +10,7 @@ import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import faPlus from "@fortawesome/fontawesome-free-solid/faPlus";
 import faMinus from "@fortawesome/fontawesome-free-solid/faMinus";
 import faTrash from "@fortawesome/fontawesome-free-solid/faTrashAlt";
+import faQuestion from "@fortawesome/fontawesome-free-solid/faQuestionCircle";
 
 import "../../css/shop.scss";
 
@@ -27,7 +28,9 @@ export class Shop extends React.Component {
             rent: "yes",
             basketAnimation: "0",
             basketVisibility: "hidden",
+            basketInfo: "hidden",
             duplicates: [],
+            canDeliver: "none"
         };
 
         this.showPopUp = this.showPopUp.bind(this);
@@ -39,6 +42,7 @@ export class Shop extends React.Component {
         this.modifyQuantity = this.modifyQuantity.bind(this);
         this.importAll = this.importAll.bind(this);
         this.findPrice = this.findPrice.bind(this);
+        this.checkCanDeliver = this.checkCanDeliver.bind(this);
     }
 
     componentDidMount() {
@@ -66,6 +70,20 @@ export class Shop extends React.Component {
             this.state.basket[index].quantity = parseInt(this.state.basket[index].quantity) + parseInt(quantity);
             this.state.basket[index].price = (parseFloat(this.state.basket[index].price) + parseFloat(price)).toFixed(2) + "€";
             this.state.basket.pop();
+        }
+    }
+
+    checkCanDeliver() {
+        var result = false;
+        this.state.basket.map(function (item) {
+            if (item.package == "fut") {
+                result = true;
+            }
+        });
+        if (result) {
+            this.setState({ canDeliver: "line-through" });
+        } else {
+            this.setState({ canDeliver: "none" });
         }
     }
 
@@ -107,6 +125,7 @@ export class Shop extends React.Component {
         this.checkDuplicates(this.findPrice("all"), newItem.quantity);
         this.hidePopUp();
         this.showBasketMenu();
+        this.checkCanDeliver();
     }
 
     showPopUp(item) {
@@ -207,6 +226,7 @@ export class Shop extends React.Component {
             this.setState({ duplicates: duplicates });
         }
         this.setState({ basket: basket });
+        this.checkCanDeliver();
     }
 
     render() {
@@ -220,13 +240,24 @@ export class Shop extends React.Component {
                 <div className="pageTitle shopTitle">Commandez vos bières en ligne !</div>
                 <div className="shopItems">
                     {this.state.products.map(function (item, index) {
-                        return (
-                            <div className="shopItem" key={index} onClick={() => this.showPopUp(item)}>
-                                <img className="shopItemImage" src={images[item.name.replace(/\s+/g, "_").replace("é", "e").toLowerCase() + "_unit.jpg"]}/>
-                                <div className="shopItemTitle">{item.name.toUpperCase()}</div>
-                                <div className="shopItemPrice">{item.price_33.toFixed(2)} €</div>
-                            </div>
-                        );
+                        if ( !(!item.isbeer && item.stock_33 < 1)) {
+                            return (
+                                <div className="shopItem" key={index} onClick={() => this.showPopUp(item)}>
+                                    <img className="shopItemImage" src={images[item.name.replace(/\s+/g, "_").replace("é", "e").toLowerCase() + "_unit.jpg"]}/>
+                                    <div className="shopItemTitle">{item.name.toUpperCase()}</div>
+                                    <div className="shopItemPrice">{item.price_33.toFixed(2)} €</div>
+                                </div>
+                            );
+                        } else {
+                            return (
+                                <div className="shopItem" key={index}>
+                                    <div className="shopItemDisabled">Article momentanément indisponible</div>
+                                    <img className="shopItemImage" src={images[item.name.replace(/\s+/g, "_").replace("é", "e").toLowerCase() + "_unit.jpg"]}/>
+                                    <div className="shopItemTitle">{item.name.toUpperCase()}</div>
+                                    <div className="shopItemPrice">{item.price_33.toFixed(2)} €</div>
+                                </div>
+                            );
+                        }
                     }.bind(this))}
                 </div>
             </div>,
@@ -329,11 +360,22 @@ export class Shop extends React.Component {
                         </div>
                         <div className="basketValidation">
                             <div className="basketTotal">
-                                Total : {this.getBasketTotal()} €
+                                <div>Total : {this.getBasketTotal()} €</div>
+                                <div className="basketTotalInfo"
+                                    onMouseEnter={() => { this.setState({ basketInfo: "visible" }); } }
+                                    onMouseLeave={() => { this.setState({ basketInfo: "hidden" }); } }
+                                >
+                                Hors frais de livraison <FontAwesomeIcon icon={faQuestion}/>
+                                </div>
                             </div>
                             <Link to={{ pathname: "/pay", state: { basket: this.state.basket, price: this.getBasketTotal() } }} className="basketButton">Passer au payement</Link>
                         </div>
                     </div>
+                </div>
+                <div className="basketTotalInfoPopup" style={{ visibility: this.state.basketInfo }}>
+                    <div style={{ textDecoration: this.state.canDeliver }}>Frais de livraison estimés : 50€</div>
+                    <div style={{ visibility: (this.state.canDeliver != "none" && this.state.basketInfo == "visible") ? "visible" : "hidden", color: "grey" }}>Impossible de livrer un fût</div>
+                    <div>Retrait en boutique : 0€</div>
                 </div>
             </div>,
             <Footer key="footer"/>
