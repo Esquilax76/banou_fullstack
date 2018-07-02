@@ -186,9 +186,18 @@ app.post("/api/patchCommand", function (req, res) {
 /***** STOCK *****/
 
 app.post("/api/patchStock", function (req, res) {
-    var query = "UPDATE beer SET stock_" + req.body.size + " = ? WHERE id = ?";
+    var query = "UPDATE product SET stock_" + req.body.size + " = ? WHERE id = ?";
 
     res.locals.connection.query(query, [req.body.stock, req.body.id],  function (error, results) {
+        if (error) { throw error; }
+        res.send(results);
+    });
+});
+
+app.post("/api/patchStockAfterCommand", function (req, res) {
+    var query = "UPDATE product SET stock_" + req.body.size + " = stock_" + req.body.size + " - " + req.body.stock + " WHERE id = ?";
+
+    res.locals.connection.query(query, [req.body.id],  function (error, results) {
         if (error) { throw error; }
         res.send(results);
     });

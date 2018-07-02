@@ -120,13 +120,22 @@ class _PayForm extends React.Component {
     }
 
     sendCommand() {
+        var corres = { unit: 1, pack: 6, carton: 12 };
         axios.post("/api/postCommand", { address: "ici", price: this.props.price, user: 25, delivery: this.props.delivery })
             .then(response => {
                 var id = response.data.insertId;
                 this.props.basket.map(function (item) {
+                    console.log(item);
                     axios.post("/api/postCommandItem", { command_id: id, quantity: item.quantity, package: item.package, size: item.size, price: parseFloat(item.price), product_id: item.product_id })
                         .then(response2 => {
                             console.log(response2);
+                            axios.post("/api/patchStockAfterCommand", { id: item.product_id, stock: parseInt(item.quantity * corres[item.package]), size: item.size })
+                                .then(response3 => {
+                                    console.log(response3);
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
                         })
                         .catch(function (error) {
                             console.log(error);

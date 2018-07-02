@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-import data from "../data/data.js";
+//import data from "../data/data.js";
 
 import { Link } from "react-router";
 import { Footer } from "./layout.js";
@@ -30,7 +30,8 @@ export class Shop extends React.Component {
             basketVisibility: "hidden",
             basketInfo: "hidden",
             duplicates: [],
-            canDeliver: "none"
+            canDeliver: "none",
+            fill: []
         };
 
         this.showPopUp = this.showPopUp.bind(this);
@@ -49,6 +50,14 @@ export class Shop extends React.Component {
         axios.get("/api/getProducts")
             .then(response => {
                 this.setState({ products: response.data });
+                setTimeout(()=> {
+                    var fill = 0;
+                    if (response.data.length % 3 != 0) {
+                        fill = (3 - response.data.length % 3);
+                    }
+                    var items = Array(fill).fill("fill");
+                    this.setState({ fill: items });
+                }, 200);
             })
             .catch(function (error) {
                 console.log(error);
@@ -115,7 +124,6 @@ export class Shop extends React.Component {
             size: this.state.size,
             details: details,
             product_id: this.state.currentChoice.id,
-            //unit: this.state.currentChoice.price
             unit: this.findPrice("unit"),
         };
 
@@ -240,7 +248,7 @@ export class Shop extends React.Component {
                 <div className="pageTitle shopTitle">Commandez vos bières en ligne !</div>
                 <div className="shopItems">
                     {this.state.products.map(function (item, index) {
-                        if ( !(!item.isbeer && item.stock_33 < 1)) {
+                        if (!(!item.isbeer && item.stock_33 < 1)) {
                             return (
                                 <div className="shopItem" key={index} onClick={() => this.showPopUp(item)}>
                                     <img className="shopItemImage" src={images[item.name.replace(/\s+/g, "_").replace("é", "e").toLowerCase() + "_unit.jpg"]}/>
@@ -259,6 +267,11 @@ export class Shop extends React.Component {
                             );
                         }
                     }.bind(this))}
+                    {this.state.fill.map((item, index) => {
+                        return (
+                            <div className="shopItem" key={index} style={{ visibility: "hidden" }}/>
+                        );
+                    })}
                 </div>
             </div>,
             <div className="disable" style={{ visibility: this.state.popup }} key="popup">
