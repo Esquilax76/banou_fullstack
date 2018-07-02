@@ -208,10 +208,6 @@ class _PayForm extends React.Component {
                             CCV :
                             <CardCVCElement  {...createOptions()} placeholder="000"/>
                         </label>
-                        {/*<label>
-                            Code Postal
-                            <PostalCodeElement/>
-                        </label>*/}
                     </div>
                 </div>
                 <button className="formSubmit">VALIDER LE PAIEMENT</button>

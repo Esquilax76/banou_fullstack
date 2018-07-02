@@ -1,11 +1,10 @@
-var config = require("../../config.js");
-
+const env = require("env2")("./.env");
 const express = require("express");
 const os = require("os");
 const bodyParser = require("body-parser");
 var nodemailer = require("nodemailer");
 var sgTransport = require("nodemailer-sendgrid-transport");
-var stripe = require("stripe")(config.stripe_secret_key);
+var stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 var multer = require("multer");
 var path = require("path");
 
@@ -20,10 +19,10 @@ var mysql = require("mysql");
 //Database connection
 app.use(function (req, res, next) {
     res.locals.connection = mysql.createConnection({
-        host: config.db_host,
-        user: config.db_user,
-        password: config.password,
-        database: config.db_name
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB8PASSWORD,
+        database: process.env.DB_NAME
     });
     res.locals.connection.connect();
     next();
@@ -210,9 +209,8 @@ app.listen(8080, () => console.log("Listening on port 8080!"));
 app.post("/api/sendMail", function (req) {
     var options = {
         auth: {
-            api_user: config.sendgrid_api_user,
-            //api_key: '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'
-            api_key: config.sendgrid_api_key
+            api_user: process.env.SENDGRID_API_USER,
+            api_key:  process.env.SENDGRID_API_USER
         }
     };
 
@@ -220,7 +218,7 @@ app.post("/api/sendMail", function (req) {
 
     var email = {
         from: req.body.email,
-        to: config.sendgrid_mail,
+        to:  process.env.SENDGRID_API_MAIL,
         subject: "Mail de " + req.body.name + " via le site banou",
         html: req.body.message.replace("\n", "<br/>"),
     };
@@ -245,7 +243,7 @@ app.post("/api/proceedPay", function (req, res) {
         description: "Payement en ligne sur le site labanou.com",
         source: token,
         statement_descriptor: "La Banou",
-        receipt_email: config.sendgrid_mail,
+        receipt_email: process.env.SENDGRID_API_MAIL,
     });
 
     res.send(200);
