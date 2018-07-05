@@ -200,7 +200,19 @@ $darkgreygreen : #3E4F4F;
 	border-radius: 5px;
 	padding: 10px;
 	resize: none;
-	height: 13em;
+	height: 4em;
+	margin-bottom: 20px;
+	padding-top: 10px;
+	font-family: inherit;
+}
+
+.modifyProductTextareaShop{
+	background-color: $greygreen;
+	border : 1px solid $darkgrey;
+	border-radius: 5px;
+	padding: 10px;
+	resize: none;
+	height: 8em;
 	margin-bottom: 20px;
 	padding-top: 10px;
 	font-family: inherit;
@@ -257,7 +269,7 @@ $darkgreygreen : #3E4F4F;
     justify-content: center;
     border-radius: 5px;
     border: 2px solid $darkgrey;
-    height: calc(50% - 10px);
+    height: calc(33% - 10px);
     width: calc(50% - 10px);
     margin-bottom: 10px;
 }
@@ -270,7 +282,6 @@ $darkgreygreen : #3E4F4F;
 
 .labelText{
 	font-size: 1.1em;
-	margin-bottom: 10px;
 	padding: 10px;
 	text-align: center;
 }

@@ -31,7 +31,7 @@ app.use(function (req, res, next) {
 /***** PRODUCTS *****/
 
 app.get("/api/getBeers", function (req, res) {
-    res.locals.connection.query("SELECT * from product WHERE isbeer = 1", function (error, results) {
+    res.locals.connection.query("SELECT * from product WHERE isbeer = 1 AND active = 1", function (error, results) {
         if (error) { throw error; }
         res.send(JSON.stringify(results));
     });
@@ -57,13 +57,6 @@ app.get("/api/getProductById", function (req, res) {
         res.send(JSON.stringify(results));
     });
 });
-
-// app.get("/api/getProductByName", function (req, res) {
-//     res.locals.connection.query("SELECT * from product WHERE name = ?", [req.query.name], function (error, results) {
-//         if (error) { throw error; }
-//         res.send(JSON.stringify(results));
-//     });
-// });
 
 /***** NEWS *****/
 
@@ -122,6 +115,13 @@ app.post("/api/patchPlacesActive", function (req, res) {
 
 app.get("/api/getPlaces", function (req, res) {
     res.locals.connection.query("SELECT * from find", function (error, results) {
+        if (error) { throw error; }
+        res.send(JSON.stringify(results));
+    });
+});
+
+app.get("/api/getActivePlaces", function (req, res) {
+    res.locals.connection.query("SELECT * from find WHERE active = 1", function (error, results) {
         if (error) { throw error; }
         res.send(JSON.stringify(results));
     });
@@ -202,6 +202,77 @@ app.post("/api/patchStockAfterCommand", function (req, res) {
     });
 });
 
+app.post("/api/postProductBeer", function (req, res) {
+    var post = {
+        name: req.body.name,
+        description_shop: req.body.description_shop,
+        description: req.body.description,
+        price_33: req.body.price_33,
+        price_75: req.body.price_75,
+        price_fut: req.body.price_fut,
+        stock_33: 0,
+        stock_75: 0,
+        stock_fut: 0,
+        alcool: req.body.alcool,
+        ibu: req.body.ibu,
+        ebc: req.body.ebc,
+        isbeer: 1,
+        active: req.body.active
+    };
+    res.locals.connection.query("INSERT INTO product SET ?", post, function (error, results) {
+        if (error) { throw error; }
+        res.send(results);
+    });
+});
+
+app.post("/api/postProductNotBeer", function (req, res) {
+    var post = {
+        name: req.body.name,
+        description_shop: req.body.description_shop,
+        price_33: req.body.price_33,
+        stock_33: 0,
+        isbeer: 0,
+        active: 1
+    };
+    res.locals.connection.query("INSERT INTO product SET ?", post, function (error, results) {
+        if (error) { throw error; }
+        res.send(results);
+    });
+});
+
+app.post("/api/patchProductBeer", function (req, res) {
+    var post = {
+        name: req.body.name,
+        description_shop: req.body.description_shop,
+        description: req.body.description,
+        price_33: req.body.price_33,
+        price_75: req.body.price_75,
+        price_fut: req.body.price_fut,
+        alcool: req.body.alcool,
+        ibu: req.body.ibu,
+        ebc: req.body.ebc,
+        active: req.body.active
+    };
+
+    res.locals.connection.query("UPDATE product SET ? WHERE id = ?", [post, req.body.id], function (error, results) {
+        if (error) { throw error; }
+        res.send(results);
+    });
+});
+
+app.post("/api/patchProductNotBeer", function (req, res) {
+    var post = {
+        name: req.body.name,
+        description_shop: req.body.description_shop,
+        price_33: req.body.price_33,
+    };
+
+    res.locals.connection.query("UPDATE product SET ? WHERE id = ?", [post, req.body.id], function (error, results) {
+        if (error) { throw error; }
+        res.send(results);
+    });
+});
+
 app.listen(8080, () => console.log("Listening on port 8080!"));
 
 /***********************************************************/
@@ -253,9 +324,13 @@ app.post("/api/proceedPay", function (req, res) {
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        console.log(file)
         switch (req.route.path) {
-            case "/api/uploadFile" :
+            case "/api/uploadShopFile" :
                 cb(null, "./src/client/img/shop");
+                break;
+            case "/api/uploadHomeFile" :
+                cb(null, "./src/client/img/home");
                 break;
             case "/api/uploadNewsFile" :
                 cb(null, "./src/client/img/news");
@@ -270,9 +345,14 @@ const storage = multer.diskStorage({
         cb(null, newFilename);
     },
 });
+
 const upload = multer({ storage });
 
-app.post("/api/uploadFile", upload.single("selectedFile"), (req, res) => {
+app.post("/api/uploadShopFile", upload.array("selectedFilesShop", 5), (req, res) => {
+    res.send();
+});
+
+app.post("/api/uploadHomeFile", upload.array("selectedFilesHome", 5), (req, res) => {
     res.send();
 });
 

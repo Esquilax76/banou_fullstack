@@ -36,9 +36,6 @@ export class Admin extends React.Component {
             .then(response => {
                 this.constructObject(response.data);
             })
-            .catch(function (error) {
-                console.log(error);
-            });
     }
 
     constructObject(response) {
@@ -69,11 +66,8 @@ export class Admin extends React.Component {
 
     handleChange(e, id) {
         axios.post("/api/patchCommand", { id: id, status: e.target.value })
-            .then(response => {
+            .then(() => {
                 this.getData();
-            })
-            .catch(function (error) {
-                console.log(error);
             });
     }
 
@@ -110,7 +104,7 @@ export class Admin extends React.Component {
                 <div className="commandContainer">
                     <div className="adminHeader" onClick={() => this.setState({ sizes: ["28%", "28%", "28%"] })}>COMMANDES</div>
                     <div className="commandSectionContainer">
-                        {status.map(function (stat, i) {
+                        {status.map((stat, i) => {
                             return (
                                 <div
                                     className={"commandSection commandSection" + i}
@@ -142,7 +136,7 @@ export class Admin extends React.Component {
                                                     <th>Prix</th>
                                                     <th>Status</th>
                                                 </tr>
-                                                {this.state.commands.map(function (item, index) {
+                                                {this.state.commands.map((item, index) => {
                                                     if (stat.includes(item.status)) {
                                                         return (
                                                             <tr key={"tr" + index}>
@@ -176,14 +170,14 @@ export class Admin extends React.Component {
                                                                 </td>
                                                             </tr>
                                                         );
-                                                    }
-                                                }.bind(this))}
+                                                    } else { return <tr key={"tr" + index}/>; }
+                                                })}
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             );
-                        }.bind(this))}
+                        })}
                     </div>
                 </div>
                 <AdminMenu active="command"/>

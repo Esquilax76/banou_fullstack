@@ -53,11 +53,7 @@ export class NewsAdmin extends React.Component {
     getNews(id) {
         axios.get("/api/getNewsById", { params: { id: id } })
             .then(response => {
-                console.log(response.data[0]);
                 this.setState({ current: response.data[0], selectedFile: { name: response.data[0].image } });
-            })
-            .catch(function (error) {
-                console.log(error);
             });
     }
 
@@ -70,28 +66,19 @@ export class NewsAdmin extends React.Component {
     getData() {
         axios.get("/api/getNews")
             .then(response => {
-                console.log(response);
                 this.setState({ news: response.data });
-            })
-            .catch(function (error) {
-                console.log(error);
             });
     }
 
     handleChangeActive(item) {
         axios.post("/api/patchNewsActive", { id: item.id, active: !item.active })
-            .then(response => {
-                console.log(response);
+            .then(() => {
                 this.getData();
-            })
-            .catch(function (error) {
-                console.log(error);
             });
     }
 
     handleFileChange(e) {
         this.setState({ selectedFile: e.target.files[0] });
-        console.log(e.target.files[0])
     }
 
     handleChange(e, type) {
@@ -107,17 +94,16 @@ export class NewsAdmin extends React.Component {
         formData.append("selectedFile", selectedFile);
 
         axios.post("/api/uploadNewsFile", formData)
-            .then((result) => {
-                console.log(result);
+            .then(() => {
                 if (this.state.action == "Créer une News") {
                     axios.post("/api/postNews", { title: this.state.current.title, description: this.state.current.description, image: this.state.selectedFile.name })
-                        .then((result2) => {
+                        .then(() => {
                             this.setState({ popup: "hidden" });
                             this.getData();
                         });
                 } else {
                     axios.post("/api/patchNews", { id: this.state.current.id, title: this.state.current.title, description: this.state.current.description, image: this.state.selectedFile.name })
-                        .then((result2) => {
+                        .then(() => {
                             this.setState({ popup: "hidden" });
                             this.getData();
                         });
@@ -127,7 +113,6 @@ export class NewsAdmin extends React.Component {
 
     render() {
         const images = this.importAll(require.context("../../img/news", false, /\.(png|jpe?g|svg)$/));
-        console.log(images);
         return [
             <HeaderAdmin key="header"/>,
             <section className="adminContainer" key="content">
@@ -139,7 +124,7 @@ export class NewsAdmin extends React.Component {
                         </div>
                     </div>
                     <div className="newsSectionContainer">
-                        {this.state.news.map(function (item, index) {
+                        {this.state.news.map((item, index) => {
                             return (
                                 <div className="stockItem" key={index} style={{ backgroundColor: !item.active ? "lightgrey" : "white" }}>
                                     <div className="newsAdminImage" style={{ backgroundImage: "url(" + images[item.image] + ")" }}/>
@@ -157,7 +142,7 @@ export class NewsAdmin extends React.Component {
                                     </div>
                                 </div>
                             );
-                        }.bind(this))}
+                        })}
                     </div>
                 </div>
                 <AdminMenu active="news"/>

@@ -7,6 +7,16 @@ $greygreen : #A6BFBF;
     src: url(../fonts/SoulMission.ttf);
 }
 
+option:disabled {
+	color: lightgrey;
+}
+
+.outOfStock{
+	color: lightgrey;
+	font-size: 0.8em;
+	margin-top: 5px
+}
+
 .shopContainer{
 	height: calc(100% - 155px);
     overflow-y: scroll;
@@ -142,7 +152,7 @@ $greygreen : #A6BFBF;
 	margin-bottom: 20px
 }
 
-.popUpinput{
+.popUpInput{
 	width: 100%;
 	margin-bottom: 20px;
 }
@@ -155,14 +165,14 @@ $greygreen : #A6BFBF;
 .popUpSelect{
 	border: 1px solid #d3d0cf;
 	color: #6E6968;
-	width: 50%;
+	width: 70%;
 	padding: 10px;
 }
 
 .popUpNumber{
 	border: 1px solid #d3d0cf;
 	color: #6E6968;
-	width: calc(50% - 22px);
+	width: calc(70% - 22px);
 	padding: 10px;
 }
 
@@ -184,7 +194,7 @@ $greygreen : #A6BFBF;
 	justify-content: center;
 	cursor: pointer;
 	padding: 10px;
-	width: calc(50% - 20px);
+	width: calc(70% - 20px);
 	color: $darkgrey;
 }
 

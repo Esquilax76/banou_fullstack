@@ -20,17 +20,7 @@ export class Contact extends React.Component {
     }
 
     handleChange(e, input) {
-        switch (input) {
-            case "name":
-                this.setState({ name: e.target.value });
-                break;
-            case "email":
-                this.setState({ email: e.target.value });
-                break;
-            default:
-                this.setState({ message: e.target.value });
-                break;
-        }
+        this.setState({ [input]: e.target.value });
     }
 
     handleSubmit() {

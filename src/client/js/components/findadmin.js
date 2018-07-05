@@ -50,11 +50,7 @@ export class FindAdmin extends React.Component {
     getNews(id) {
         axios.get("/api/getPlaceById", { params: { id: id } })
             .then(response => {
-                console.log(response.data[0]);
                 this.setState({ current: response.data[0] });
-            })
-            .catch(function (error) {
-                console.log(error);
             });
     }
 
@@ -67,22 +63,14 @@ export class FindAdmin extends React.Component {
     getData() {
         axios.get("/api/getPlaces")
             .then(response => {
-                console.log(response);
                 this.setState({ places: response.data });
-            })
-            .catch(function (error) {
-                console.log(error);
             });
     }
 
     handleChangeActive(item) {
         axios.post("/api/patchPlacesActive", { id: item.id, active: !item.active })
-            .then(response => {
-                console.log(response);
+            .then(() => {
                 this.getData();
-            })
-            .catch(function (error) {
-                console.log(error);
             });
     }
 
@@ -95,21 +83,15 @@ export class FindAdmin extends React.Component {
     submitForm() {
         if (this.state.action == "Créer un point de vente") {
             axios.post("/api/postPlace", { type: this.state.current.type, name: this.state.current.name, address: this.state.current.address, phone: this.state.current.phone, site: this.state.current.site, opening: this.state.current.opening })
-                .then((result) => {
+                .then(() => {
                     this.setState({ popup: "hidden" });
                     this.getData();
-                })
-                .catch(function (error) {
-                    console.log(error);
                 });
         } else {
             axios.post("/api/patchPlace", { id: this.state.current.id, type: this.state.current.type, name: this.state.current.name, address: this.state.current.address, phone: this.state.current.phone, site: this.state.current.site, opening: this.state.current.opening })
-                .then((result) => {
+                .then(() => {
                     this.setState({ popup: "hidden" });
                     this.getData();
-                })
-                .catch(function (error) {
-                    console.log(error);
                 });
         }
     }
@@ -136,7 +118,7 @@ export class FindAdmin extends React.Component {
                             <div className="findTableHeaderItem findTableOpening">Horaires</div>
                             <div className="findTableHeaderItem findTableActions">Actions</div>
                         </div>
-                        {this.state.places.map(function (item, index) {
+                        {this.state.places.map((item, index) => {
                             return (
                                 <div className="findItem" key={index} style={{ backgroundColor: !item.active ? "lightgrey" : "white" }}>
                                     <div className="findItemDesc">
@@ -157,7 +139,7 @@ export class FindAdmin extends React.Component {
                                     </div>
                                 </div>
                             );
-                        }.bind(this))}
+                        })}
                     </div>
                 </div>
                 <AdminMenu active="find"/>

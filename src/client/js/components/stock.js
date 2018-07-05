@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 
 import Moment from "react-moment";
-import data from "../data/data.js";
 import "../../css/stock.scss";
 
 import { Link } from "react-router";
@@ -10,12 +9,13 @@ import { Link } from "react-router";
 import { HeaderAdmin, AdminMenu } from "./layout.js";
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-//import faTrash from "@fortawesome/fontawesome-free-solid/faTrashAlt";
 import faPen from "@fortawesome/fontawesome-free-solid/faPencilAlt";
 import faCamera from "@fortawesome/fontawesome-free-solid/faCamera";
 import faEye from "@fortawesome/fontawesome-free-solid/faEye";
 import faEyeS from "@fortawesome/fontawesome-free-solid/faEyeSlash";
 import faPlus from "@fortawesome/fontawesome-free-solid/faPlus";
+
+import { getFileName } from "./util.js";
 
 export class Stock extends React.Component {
     constructor(props) {
@@ -25,13 +25,14 @@ export class Stock extends React.Component {
             stocks: {},
             action: "Modifier un produit",
             popup: "hidden",
-            current: { id: 2, active: 1, isbeer: 1, name: "Blanche", description: "La bière d’été par excellence, rafraîchissante aux arômes d’agrumes.", price_33: 2.8, price_75: 5, price_fut: 105, stock_33: 0, stock_75: 0, stock_fut: 0, ebc: 8, ibu: 30, alcool: 4.8 },
+            current: { id: 2, active: 1, isbeer: 1, name: "", description_shop: "", description: "", price_33: 0, price_75: 0, price_fut: 0, stock_33: 0, stock_75: 0, stock_fut: 0, ebc: 0, ibu: 0, alcool: 0 },
         };
         this.getData = this.getData.bind(this);
         this.getProduct = this.getProduct.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeActive = this.handleChangeActive.bind(this);
         this.showPopup = this.showPopup.bind(this);
+        this.hidePopup = this.hidePopup.bind(this);
         this.importAll = this.importAll.bind(this);
     }
 
@@ -40,13 +41,17 @@ export class Stock extends React.Component {
     }
 
     showPopupCreate() {
-        var empty = { active: 1, isbeer: 1, name: "", description: "", price_33: 0, price_75: 0, price_fut: 0, stock_33: 0, stock_75: 0, stock_fut: 0, ebc: 0, ibu: 0, alcool: 0 };
+        var empty = { active: 1, isbeer: 1, name: "", description: "", description_shop: "", price_33: 0, price_75: 0, price_fut: 0, stock_33: 0, stock_75: 0, stock_fut: 0, ebc: 0, ibu: 0, alcool: 0 };
         this.setState({ action: "Ajouter un produit", popup: "visible", current: empty });
     }
 
     showPopup(item) {
         this.setState({ action: "Modifier un produit", popup: "visible" });
         this.getProduct(item.id);
+    }
+
+    hidePopup() {
+        this.setState({ popup: "hidden" });
     }
 
     importAll(r) {
@@ -59,20 +64,13 @@ export class Stock extends React.Component {
         axios.get("/api/getProducts")
             .then(response => {
                 this.setState({ beers: response.data });
-            })
-            .catch(function (error) {
-                console.log(error);
             });
     }
 
     getProduct(id) {
         axios.get("/api/getProductById", { params: { id: id } })
             .then(response => {
-                console.log(response.data[0]);
                 this.setState({ current: response.data[0] });
-            })
-            .catch(function (error) {
-                console.log(error);
             });
     }
 
@@ -82,22 +80,13 @@ export class Stock extends React.Component {
         this.setState({ beers: newBeers });
 
         axios.post("/api/patchStock", { id: item.id, stock: e.target.value, size: size })
-            .then(response => {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            .then(() => {});
     }
 
     handleChangeActive(item) {
         axios.post("/api/patchProductActive", { id: item.id, active: !item.active })
-            .then(response => {
-                console.log(response);
+            .then(() => {
                 this.getData();
-            })
-            .catch(function (error) {
-                console.log(error);
             });
     }
 
@@ -114,10 +103,10 @@ export class Stock extends React.Component {
                         </div>
                     </div>
                     <div className="stockSectionContainer">
-                        {this.state.beers.map(function (item, index) {
+                        {this.state.beers.map((item, index) => {
                             return (
                                 <div className="stockItem" key={index} style={{ backgroundColor: !item.active ? "lightgrey" : "white" }}>
-                                    <img src={images[item.name.replace(/\s+/g, "_").replace("é", "e").toLowerCase() + "_unit.jpg"]} className="stockImage"/>
+                                    <img src={images[getFileName(item.name) + "_unit.jpg"]} className="stockImage"/>
                                     <div className="stockItemDesc">
                                         <div className="stockItemName">{item.name.toUpperCase()}</div>
                                         <div className="stockItemDescription">{item.description}</div>
@@ -147,7 +136,7 @@ export class Stock extends React.Component {
                                     </div>
                                 </div>
                             );
-                        }.bind(this))}
+                        })}
                     </div>
                 </div>
                 <AdminMenu active="stock"/>
@@ -156,7 +145,7 @@ export class Stock extends React.Component {
                 <div className="popUpStock">
                     <div className="close" onClick={() => this.setState({ popup: "hidden" })}>+</div>
                     <div className="popUpStockHeader">{this.state.action.toUpperCase()}</div>
-                    <PopUpBeer action={this.state.action} current={this.state.current} images={images}/>
+                    <PopUpBeer action={this.state.action} current={this.state.current} images={images} getData={this.getData} hidePopup={this.hidePopup}/>
                 </div>
             </div>
         ];
@@ -166,18 +155,16 @@ export class Stock extends React.Component {
 class PopUpBeer extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            selectedFile: "",
-            radio: "yes",
-        };
+        this.state = { radio: "yes" };
         this.handleChange = this.handleChange.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
-        //this.getDynamicImage = this.getDynamicImage.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
+            id: nextProps.current.id,
             description: nextProps.current.description,
+            description_shop: nextProps.current.description_shop,
             name: nextProps.current.name,
             ebc: nextProps.current.ebc,
             ibu: nextProps.current.ibu,
@@ -188,6 +175,12 @@ class PopUpBeer extends React.Component {
             active: nextProps.current.active,
             price: nextProps.current.price,
             isbeer: nextProps.current.isbeer,
+            boutique_unite: "",
+            boutique_pack: "",
+            boutique_carton: "",
+            boutique_fut: "",
+            accueil_bouteille: "",
+            accueil_verre: ""
         });
     }
 
@@ -195,28 +188,75 @@ class PopUpBeer extends React.Component {
         this.setState({ [type]: e.target.value });
     }
 
-    handleFileChange(e) {
-        this.setState({ selectedFile: e.target.files[0] });
+    handleFileChange(e, name) {
+        this.setState({ [getFileName(name)]: e.target.files[0] });
     }
 
     submitForm() {
-        const selectedFile = this.state.selectedFile;
         let formData = new FormData();
+        let formData2 = new FormData();
 
-        //formData.append('description', "test");
-        formData.append("selectedFile", selectedFile);
-        console.log(formData);
-        axios.post("/api/uploadFile", formData)
-            .then((result) => {
-                console.log(result);
+        if (this.state.boutique_unite != "") { formData.append("selectedFilesShop", this.state.boutique_unite); }
+        if (this.state.boutique_pack != "") { formData.append("selectedFilesShop", this.state.boutique_pack); }
+        if (this.state.boutique_carton != "") { formData.append("selectedFilesShop", this.state.boutique_carton); }
+        if (this.state.boutique_fut != "") { formData.append("selectedFilesShop", this.state.boutique_fut); }
+        if (this.state.accueil_bouteille != "") { formData2.append("selectedFilesHome", this.state.accueil_bouteille); }
+        if (this.state.accueil_verre != "") { formData2.append("selectedFilesHome", this.state.accueil_verre); }
+
+        axios.post("/api/uploadShopFile", formData)
+            .then(() => {
+                axios.post("/api/uploadHomeFile", formData2)
+                    .then(() => {});
+
+                var post = {
+                    name: this.state.name,
+                    description_shop: this.state.description_shop,
+                    description: this.state.description,
+                    price_33: this.state.price_33,
+                    price_75: this.state.price_75,
+                    price_fut: this.state.price_fut,
+                    alcool: this.state.alcool,
+                    ibu: this.state.ibu,
+                    ebc: this.state.ebc,
+                    active: this.state.active
+                };
+                if (this.props.action == "Ajouter un produit") {
+                    if (this.state.isbeer) {
+                        axios.post("/api/postProductBeer", post)
+                            .then(() => {
+                                this.props.hidePopup();
+                                this.props.getData();
+                            });
+                    } else {
+                        axios.post("/api/postProductNotBeer", post)
+                            .then(() => {
+                                this.props.hidePopup();
+                                this.props.getData();
+                            });
+                    }
+                } else {
+                    post["id"] = this.state.id;
+                    if (this.state.isbeer) {
+                        axios.post("/api/patchProductBeer", post)
+                            .then(() => {
+                                this.props.hidePopup();
+                                this.props.getData();
+                            });
+                    } else {
+                        axios.post("/api/patchProductNotBeer", post)
+                            .then(() => {
+                                this.props.hidePopup();
+                                this.props.getData();
+                            });
+                    }
+                }
             });
     }
 
     render() {
         const info = { Indices: ["Alc/vol", "IBU", "EBC"], Prix: ["33cl", "75cl", "fut"] };
-        const inputImage = ["BOUTIQUE UNITE", "BOUTIQUE PACK DE 6", "BOUTIQUE CARTON", "ACCUEIL"];
+        const inputImage = ["BOUTIQUE UNITE", "BOUTIQUE PACK", "BOUTIQUE CARTON", "BOUTIQUE FUT", "ACCUEIL BOUTEILLE", "ACCUEIL VERRE"];
         const corres = { "Alc/vol": "alcool", "IBU": "ibu", "EBC": "ebc", "33cl": "price_33", "75cl": "price_75", "fut": "price_fut" };
-        //const corresImage = { "BOUTIQUE UNITE": "unit", "BOUTIQUE PACK DE 6": "pack", "BOUTIQUE CARTON" : "carton", "ACCUEIL" : "" };
         return (
             <div className="popUpContentHeader">
                 <div className="modifyProductRow">
@@ -228,33 +268,43 @@ class PopUpBeer extends React.Component {
                                 <option value="0">Autres</option>
                             </select>
                         </div>
-                        <input type="text" placeholder="Nom du produit" className="modifyProductInput" value={this.state.name} onChange={(e) => this.handleChange(e, "name")}/>
-                        <textarea placeholder="Description du produit" className="modifyProductTextarea" value={this.state.description} onChange={(e) => this.handleChange(e, "description")}/>
+                        <input type="text" placeholder="Nom du produit" className="modifyProductInput" value={(typeof this.state.name == "undefined") ? "" : this.state.name} onChange={(e) => this.handleChange(e, "name")}/>
+                        <textarea placeholder="Description boutique" className="modifyProductTextareaShop" value={this.state.description_shop} onChange={(e) => this.handleChange(e, "description_shop")}/>
+                        { this.state.isbeer == "1" &&
+                            <textarea placeholder="Description accueil" className="modifyProductTextarea" value={this.state.description} onChange={(e) => this.handleChange(e, "description")}/>
+                        }
                     </div>
                     {this.state.isbeer == "1" &&
                         <div className="modifyProductImages">
-                            {inputImage.map(function (item) {
+                            {inputImage.map((item) => {
                                 return [
-                                    <label htmlFor="file" className="label-file" key={item}>
-                                        <div className="labelText">{item}</div>
-                                        <FontAwesomeIcon icon={faCamera} className="inputIcon"/>
-                                        <div></div>
+                                    <label htmlFor={getFileName(item)} className="label-file" key={item}>
+                                        { (this.state[getFileName(item)] == "") ? <div style={{ textAlign: "center" }}>
+                                            <div className="labelText">{item}</div>
+                                            <FontAwesomeIcon icon={faCamera} className="inputIcon"/>
+                                        </div>
+                                            : <div style={{ padding: "10px", textAlign: "center", marginTop: "10px", width: "80%" }}>{this.state[getFileName(item)].name}</div>
+                                        }
                                     </label>,
-                                    <input id="file" className="input-file" type="file" key={item + "file"} onChange={(e) => this.handleFileChange(e, item)} name="selectedFile"/>
+                                    <input id={getFileName(item)} className="input-file" type="file" key={item + "file"} onChange={(e) => this.handleFileChange(e, item)} name={getFileName(item)}/>
                                 ];
-                            }.bind(this))}
+                            })}
                         </div>
                     }
                     {this.state.isbeer == "0" &&
                         <div className="modifyProductImages">
                             <label htmlFor="file" className="label-file label-fileSolo">
-                                <div className="labelText">BOUTIQUE</div>
-                                <FontAwesomeIcon icon={faCamera} className="inputIcon"/>
+                                { (this.state[getFileName("boutique_unite")] == "") ? <div style={{ textAlign: "center" }}>
+                                    <div className="labelText">BOUTIQUE</div>
+                                    <FontAwesomeIcon icon={faCamera} className="inputIcon"/>
+                                </div>
+                                    : <div style={{ padding: "10px", textAlign: "center", marginTop: "10px", width: "80%" }}>{this.state[getFileName("boutique_unite")].name}</div>
+                                }
                             </label>
-                            <input id="file" className="input-file" type="file" onChange={(e) => this.handleFileChange(e, "only")} />
+                            <input id="file" className="input-file" type="file" onChange={(e) => this.handleFileChange(e, "boutique_unite")} />
                             <div className="flex" style={{ width: "140px", justifyContent: "space-between", height: "2em", marginTop: "10px" }}>
                                 <div className="bold">Prix :</div>
-                                <input type="number" step="0.01" min="0" className="modifyProductBeerInfo" value={this.state.price_33}/>
+                                <input type="number" step="0.01" min="0" className="modifyProductBeerInfo" value={this.state.price_33} onChange={(e) => this.handleChange(e, "price_33")}/>
                             </div>
                         </div>
                     }
@@ -262,21 +312,21 @@ class PopUpBeer extends React.Component {
                 {this.state.isbeer == "1" &&
                     <div className="modifyProductRow">
                         <div style={{ width: "60%" }}>
-                            {Object.keys(info).map(function (key) {
+                            {Object.keys(info).map((key) => {
                                 return (
                                     <div className="modifyProductInfo" key={key}>
                                         <div style={{ width: "100px" }}>{key} :</div>
-                                        {info[key].map(function (item) {
+                                        {info[key].map((item) => {
                                             return (
                                                 <div className="flex" style={{ width: "140px", justifyContent: "space-between" }} key={item}>
                                                     <div className="bold">{item} :</div>
                                                     <input type="number" step="0.01" min="0" className="modifyProductBeerInfo" value={this.state[corres[item]]} onChange={(e) => this.handleChange(e, corres[item])} name="selectedFile"/>
                                                 </div>
                                             );
-                                        }.bind(this))}
+                                        })}
                                     </div>
                                 );
-                            }.bind(this))}
+                            })}
                         </div>
                         <div className="modifyProductRadioContainer">
                             <div className="modifyProductRadioText">Visible dans l'accueil ?</div>

@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 
 import "../../css/beers.scss";
-//import data from "../data/data.js";
+import { getFileName } from "./util.js";
 
 export class Beers extends React.Component {
     constructor(props) {
@@ -36,19 +36,16 @@ export class Beers extends React.Component {
         axios.get("/api/getBeers")
             .then(response => {
                 this.setState({ beers: response.data });
-            })
-            .catch(function (error) {
-                console.log(error);
             });
     }
 
     findBeer(name) {
-        this.state.beers.forEach(function (value) {
+        this.state.beers.forEach((value) => {
             if (value.name == name) {
                 this.setState({ active: value });
             }
             return -1;
-        }.bind(this));
+        });
     }
 
     showDetails(v, name) {
@@ -80,21 +77,21 @@ export class Beers extends React.Component {
             <section className="beersContainer">
                 <div className="pageTitle">Découvrez nos bières artisanales</div>
                 <div className="bottleContainer">
-                    {this.state.beers.map(function (item, index) {
+                    {this.state.beers.map((item, index) => {
                         return (
                             <div
                                 key={index}
                                 onMouseEnter={() => this.showDetails(index, item.name)}
                                 onMouseLeave={this.hideDetails}
                                 className="bottle"
-                                style={{ backgroundImage: "url(" + images["bouteille_" + item.name.toLowerCase().replace(" ", "_") + ".png"]  + ")", left: this.state.positions[index] }}
+                                style={{ backgroundImage: "url(" + images["bouteille_" + getFileName(item.name) + ".png"]  + ")", left: this.state.positions[index] }}
                             />
                         );
-                    }.bind(this))}
+                    })}
                     <div
                         className="description"
                         onMouseEnter={() => this.showDetails(this.state.current.position, this.state.current.name)}
-                        style={{ left: this.state.details, opacity: this.state.opacity, backgroundImage: "url(" + images["verre_" + this.state.current.name.toLowerCase().replace(" ", "_") + ".png"]  + ")" }}
+                        style={{ left: this.state.details, opacity: this.state.opacity, backgroundImage: "url(" + images["verre_" + getFileName(this.state.current.name) + ".png"]  + ")" }}
                     >
                         <div className="desc">
                             <div className="descTitle">{this.state.active.name.toUpperCase()}</div>

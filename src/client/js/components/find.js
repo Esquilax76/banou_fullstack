@@ -33,7 +33,7 @@ const MyMapComponent = compose(
         defaultOptions={{ styles: mapStyle }}
     >
 
-        {props.markers.map(function (item, index) {
+        {props.markers.map((item, index) => {
             var image = markerBiere;
             if (item.type === "bar") {
                 image = markerPinte;
@@ -91,9 +91,9 @@ export class Find extends React.Component {
     getPlaces() {
         var places = [];
         var cities = [];
-        axios.get("/api/getPlaces")
+        axios.get("/api/getActivePlaces")
             .then(response => {
-                response.data.map(function (item) {
+                response.data.map((item) => {
                     let place = item;
                     axios.get("https://maps.google.com/maps/api/geocode/json?address=" + item.address.split(" ").join("+") + "&key=AIzaSyBfx9Bh1qVZY_QMAXFocqwoDXek4ck0714")
                         .then(response2 => {
@@ -103,22 +103,16 @@ export class Find extends React.Component {
                             if (cities.indexOf(city) === -1) {
                                 cities.push(city);
                             }
-                        })
-                        .catch(function (error) {
-                            console.log(error);
                         });
-                }.bind(this));
+                });
                 this.setState({ places: places, citiesTmp: cities });
                 setTimeout(() => { this.getCities(); }, 500);
-            })
-            .catch(function (error) {
-                console.log(error);
             });
     }
 
     getCities() {
         let result = [];
-        this.state.citiesTmp.map(function (item) {
+        this.state.citiesTmp.map((item) => {
             axios.get("https://maps.google.com/maps/api/geocode/json?address=" + item + "&key=AIzaSyBfx9Bh1qVZY_QMAXFocqwoDXek4ck0714")
                 .then(response => {
                     var city = {
@@ -126,11 +120,8 @@ export class Find extends React.Component {
                         coordinates: response.data.results[0].geometry.location
                     };
                     result.push(city);
-                })
-                .catch(function (error) {
-                    console.log(error);
                 });
-        }.bind(this));
+        });
         setTimeout(() => { this.setState({ cities: result }); }, 500);
     }
 
@@ -163,11 +154,11 @@ export class Find extends React.Component {
                         <div className="selectCityContainer">
                             <select className="selectCity" defaultValue="nothing" onChange={(e) => this.handleChange(e)}>
                                 <option value="nothing" disabled>Sélectionnez une ville</option>
-                                {this.state.cities.map(function (item, index) {
+                                {this.state.cities.map((item, index) => {
                                     return (
                                         <option key={index} value={item.coordinates.lat + "_" + item.coordinates.lng}>{item.name}</option>
                                     );
-                                }.bind(this))}
+                                })}
                             </select>
                             <div className="legend">
                                 <img src={pictoBiere} className="legendImg"/>

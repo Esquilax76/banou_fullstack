@@ -3,7 +3,8 @@ import axios from "axios";
 import { Link } from "react-router";
 
 import "../../css/pay.scss";
-import data from "../data/data.js";
+
+import { getFileName } from "./util.js";
 
 import { CardElement, CardNumberElement, CardExpiryElement, CardCVCElement, PostalCodeElement, PaymentRequestButtonElement, StripeProvider, Elements, injectStripe } from "react-stripe-elements";
 
@@ -13,10 +14,15 @@ export class Pay extends React.Component {
         this.state = {
             basket: this.props.location.state.basket,
             price: this.props.location.state.price,
-            delivery: 0
+            delivery: 0,
+            canDeliver: "none"
         };
         this.handleChange = this.handleChange.bind(this);
         this.importAll = this.importAll.bind(this);
+    }
+
+    componentDidMount() {
+        this.checkCanDeliver();
     }
 
     importAll(r) {
@@ -27,6 +33,20 @@ export class Pay extends React.Component {
 
     handleChange(e) {
         this.setState({ delivery: e });
+    }
+
+    checkCanDeliver() {
+        var result = false;
+        this.state.basket.map((item) => {
+            if (item.package == "fut") {
+                result = true;
+            }
+        });
+        if (result) {
+            this.setState({ canDeliver: "line-through" });
+        } else {
+            this.setState({ canDeliver: "none" });
+        }
     }
 
     render() {
@@ -44,12 +64,12 @@ export class Pay extends React.Component {
                         <div className="commandRecapQuantity">Qté</div>
                         <div className="commandRecapTotal">Total</div>
                     </div>
-                    {Object.keys(this.state.basket).map(function (key, index) {
+                    {Object.keys(this.state.basket).map((key, index) => {
                         let item = this.state.basket[key];
                         return (
                             <div className="commandRecapRow" key={index}>
                                 <div className="commandRecapItem">
-                                    <img src={images[item.name.replace(/\s+/g, "_").replace("é", "e").toLowerCase() + "_" + item.package + ".jpg"]} className="recapItemImage"/>
+                                    <img src={images[getFileName(item.name) + "_" + item.package + ".jpg"]} className="recapItemImage"/>
                                     <div style={{ display: "flex", flexDirection: "column" }}>
                                         <div>{this.state.basket[key].name.toUpperCase()}</div>
                                         <div className="commandRecapInfo">{item.details}</div>
@@ -60,7 +80,7 @@ export class Pay extends React.Component {
                                 <div className="commandRecapTotal">{item.price}</div>
                             </div>
                         );
-                    }.bind(this))}
+                    })}
                 </div>
                 <div className="payTotal">
                     <div className="payTotalText">
@@ -79,17 +99,17 @@ export class Pay extends React.Component {
                         <div className="deliveryPrice"> 0 €</div>
                     </div>
                     <div className="payDeliveryOption">
-                        <input type="radio" value="10" onChange={() => this.handleChange("10")} checked={this.state.delivery == "10"} />
-                        <label className="radioLabel">Livraison à domicile</label>
+                        <input type="radio" value="10" onChange={() => this.handleChange("10")} checked={this.state.delivery == "10"} disabled={this.state.canDeliver != "none"}/>
+                        <label className="radioLabel" style={{ textDecoration: this.state.canDeliver }}>Livraison à domicile</label>
                         <div className="dots"/>
                         <div className="deliveryPrice">10 €</div>
                     </div>
-                    <div className="payTotalInfo">(france Métropolitaine uniquement)</div>
+                    <div className="payTotalInfo">{(this.state.canDeliver == "none") ? "(france Métropolitaine uniquement)" : "Impossible de livrer les fûts"}</div>
                     <div className="totalToPay">TOTAL A PAYER : {(parseFloat(this.state.delivery) + parseFloat(this.state.price)).toFixed(2)} €</div>
                 </div>
                 <StripeProvider apiKey="pk_test_syiPXjXdGnFGKn00cX6zJQ2Q" key="form">
                     <Elements>
-                        <PayForm price={(parseFloat(this.state.delivery) + parseFloat(this.state.price)).toFixed(2)} basket={this.state.basket} delivery={this.state.delivery}/>
+                        <PayForm price={(parseFloat(this.state.delivery) + parseFloat(this.state.price)).toFixed(2)} basket={this.state.basket} delivery={this.state.delivery} router={this.props.router}/>
                     </Elements>
                 </StripeProvider>
             </div>
@@ -107,11 +127,10 @@ class _PayForm extends React.Component {
     handleSubmit(ev) {
         ev.preventDefault();
         this.props.stripe.createToken().then(payload => {
-            console.log(payload);
             axios.post("/api/proceedPay", { stripeToken: payload.token.id, price: this.props.price })
-                .then(response => {
-                    console.log(response);
+                .then(() => {
                     this.sendCommand();
+                    this.props.router.push({ pathname: "/boutique", state: { redirect: "yes" } });
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -124,26 +143,13 @@ class _PayForm extends React.Component {
         axios.post("/api/postCommand", { address: "ici", price: this.props.price, user: 25, delivery: this.props.delivery })
             .then(response => {
                 var id = response.data.insertId;
-                this.props.basket.map(function (item) {
-                    console.log(item);
+                this.props.basket.map((item) => {
                     axios.post("/api/postCommandItem", { command_id: id, quantity: item.quantity, package: item.package, size: item.size, price: parseFloat(item.price), product_id: item.product_id })
-                        .then(response2 => {
-                            console.log(response2);
+                        .then(() => {
                             axios.post("/api/patchStockAfterCommand", { id: item.product_id, stock: parseInt(item.quantity * corres[item.package]), size: item.size })
-                                .then(response3 => {
-                                    console.log(response3);
-                                })
-                                .catch(function (error) {
-                                    console.log(error);
-                                });
-                        })
-                        .catch(function (error) {
-                            console.log(error);
+                                .then(() => {});
                         });
-                }.bind(this));
-            })
-            .catch(function (error) {
-                console.log(error);
+                });
             });
     }
 
@@ -165,33 +171,33 @@ class _PayForm extends React.Component {
                     <div className="formRow">
                         <label className="formLabel">
                             Nom :
-                            <input type="text" className="paySmallInput" autoComplete="nope"/>
+                            <input type="text" className="paySmallInput" autoComplete="nope" required/>
                         </label>
                         <label className="formLabel">
                             Prénom :
-                            <input type="text" className="paySmallInput" autoComplete="nope"/>
+                            <input type="text" className="paySmallInput" autoComplete="nope" required/>
                         </label>
                     </div>
                     <div className="formRow">
                         <label className="formLabelLarge">
                             Addresse :
-                            <input type="text" className="payLargeInput" autoComplete="nope"/>
+                            <input type="text" className="payLargeInput" autoComplete="nope" required/>
                         </label>
                     </div>
                     <div className="formRow">
                         <label className="formLabel">
                             Ville :
-                            <input type="text" className="paySmallInput" autoComplete="nope"/>
+                            <input type="text" className="paySmallInput" autoComplete="nope" required/>
                         </label>
                         <label className="formLabel">
                             Code Postal :
-                            <input type="text" className="paySmallInput" autoComplete="nope"/>
+                            <input type="text" className="paySmallInput" autoComplete="nope" required/>
                         </label>
                     </div>
                     <div className="formRow">
                         <label className="formLabel">
                             Téléphone :
-                            <input type="text" className="paySmallInput" autoComplete="nope"/>
+                            <input type="text" className="paySmallInput" autoComplete="nope" required/>
                         </label>
                     </div>
                     <div className="formSubtitle">INFORMATIONS DE PAIEMENT</div>

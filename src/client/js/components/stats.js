@@ -9,6 +9,8 @@ import { Link } from "react-router";
 
 import { HeaderAdmin, AdminMenu } from "./layout.js";
 
+import { getFileName } from "./util.js";
+
 import "../../css/admin.scss";
 import "../../css/stats.scss";
 
@@ -35,18 +37,12 @@ export class Stats extends React.Component {
         axios.get("/api/getBeers")
             .then(response => {
                 this.setState({ beers: response.data });
-            })
-            .catch(function (error) {
-                console.log(error);
             });
         axios.get("/api/getCommands")
             .then(response => {
                 this.constructDataBenefits(response.data);
                 this.constructData(response.data);
                 this.constructDataNotBeer(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
             });
     }
 
@@ -58,10 +54,10 @@ export class Stats extends React.Component {
 
     exportData() {
         var result = [];
-        Object.keys(this.state.data).map(function (key) {
+        Object.keys(this.state.data).map((key) => {
             let item = this.state.data[key];
             result.push({ name: key, 33: item["33"], 75: item["75"], fut: item["fut"], litres: item.totalLitters });
-        }.bind(this));
+        });
         return result;
     }
 
@@ -69,11 +65,10 @@ export class Stats extends React.Component {
         var beers = this.state.beers;
         var result = {};
         var packCorres = { fut: 1, unit: 1, pack: 6, carton: 12 };
-        //var beers = ["ipa", "blanche", "blonde", "rousse", "brune", "noel"];
-        Object.keys(beers).map(function (key) {
+        Object.keys(beers).map((key) => {
             result[beers[key].name.toLowerCase()] = { 33: 0, 75: 0, fut: 0, totalLitters: 0 };
-        }.bind(this));
-        Object.keys(response).map(function (key) {
+        });
+        Object.keys(response).map((key) => {
             var size = 30;
             var pack = packCorres[response[key].package];
 
@@ -81,29 +76,29 @@ export class Stats extends React.Component {
                 size = parseInt(response[key].size) / 100;
             }
 
-            if (response[key].name.toLowerCase().replace(" ", "_").replace("é", "e") == "pack_decouverte") {
-                Object.keys(result).map(function (key2) {
+            if (getFileName(response[key].name) == "pack_decouverte") {
+                Object.keys(result).map((key2) => {
                     result[key2]["totalLitters"] += response[key].quantity * size;
                     result[key2][response[key].size] += response[key].quantity;
-                }.bind(this));
+                });
             } else if (response[key].isbeer == 1) {
                 result[response[key].name.toLowerCase()]["totalLitters"] += response[key].quantity * size * pack;
                 result[response[key].name.toLowerCase()][response[key].size] += response[key].quantity * pack;
             }
-        }.bind(this));
+        });
 
         this.setState({ data: result });
         this.constructDataLitters();
-        Object.keys(beers).map(function (key) {
+        Object.keys(beers).map((key) => {
             this.constructDataProducts(beers[key].name.toLowerCase());
-        }.bind(this));
+        });
     }
 
     constructDataLitters() {
         var result = [];
-        Object.keys(this.state.data).map(function (key) {
+        Object.keys(this.state.data).map((key) => {
             result.push(this.state.data[key]["totalLitters"].toFixed(2));
-        }.bind(this));
+        });
 
         var data = {
             datasets: [{
@@ -120,7 +115,7 @@ export class Stats extends React.Component {
         var result = {};
         var labels = [];
         var insert = [];
-        Object.keys(response).map(function (key) {
+        Object.keys(response).map((key) => {
             if (!response[key].isbeer) {
                 let name = response[key].name;
                 if (!labels.includes(name)) {
@@ -132,11 +127,11 @@ export class Stats extends React.Component {
                     result[name] = response[key].quantity;
                 }
             }
-        }.bind(this));
+        });
 
-        Object.keys(result).map(function (key) {
+        Object.keys(result).map((key) => {
             insert.push(result[key]);
-        }.bind(this));
+        });
 
         var data = {
             datasets: [{
@@ -153,9 +148,9 @@ export class Stats extends React.Component {
         var result = [];
         var sizes = ["33", "75", "fut"];
 
-        sizes.map(function (item) {
+        sizes.map((item) => {
             result.push(this.state.data[type][item]);
-        }.bind(this));
+        });
 
         var data = {
             datasets: [{
@@ -174,7 +169,7 @@ export class Stats extends React.Component {
         var result = {};
         var labels = [];
         var insert = [];
-        Object.keys(response).map(function (key) {
+        Object.keys(response).map((key) => {
             let date = moment(response[key].date).format("MM/YY");
             if (!labels.includes(date)) {
                 labels.push(date);
@@ -184,11 +179,11 @@ export class Stats extends React.Component {
             } else {
                 result[date] = parseFloat(response[key].price);
             }
-        }.bind(this));
+        });
 
-        Object.keys(result).map(function (key) {
+        Object.keys(result).map((key) => {
             insert.push(result[key]);
-        }.bind(this));
+        });
 
         var data = {
             datasets: [{
@@ -283,9 +278,9 @@ export class Stats extends React.Component {
                             <div className="chartTitle">Sous quels formats ?</div>
                             <div className="products">
                                 <div className="productsChart">
-                                    {Object.keys(this.state.dataProducts).map(function (key, index) {
+                                    {Object.keys(this.state.dataProducts).map((key, index) => {
                                         return (
-                                            <div className="productsChartImg" style={{ backgroundImage: "url(" + images[key.replace(" ", "_") + "_stats.png"] + ")" }} key={"chart" + index}>
+                                            <div className="productsChartImg" style={{ backgroundImage: "url(" + images[getFileName(key) + "_stats.png"] + ")" }} key={"chart" + index}>
                                                 <Doughnut
                                                     data={this.state.dataProducts[key]}
                                                     height={beerChartSize}
@@ -296,7 +291,7 @@ export class Stats extends React.Component {
                                                 />
                                             </div>
                                         );
-                                    }.bind(this))}
+                                    })}
                                 </div>
                             </div>
                         </div>

@@ -2,14 +2,11 @@ import React from "react";
 import axios from "axios";
 
 import "../../css/news.scss";
-//import data from "../data/data.js";
 
 export class News extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            //news: data.barNews,
-            //current: data.barNews[0],
             news: [],
             current: [],
             index: 0,
@@ -30,11 +27,7 @@ export class News extends React.Component {
     getNews() {
         axios.get("/api/getActiveNews")
             .then(response => {
-                //console.log(response);
                 this.setState({ news: response.data, current: response.data[0] });
-            })
-            .catch(function (error) {
-                console.log(error);
             });
     }
 
@@ -90,17 +83,15 @@ export class News extends React.Component {
                 </div>
                 <div className="barImage" style={{ backgroundImage: "url(" + images[this.state.current.image] + ")" }}>
                     <div className="barNewsNav">
-                        {this.state.news.map(function (item, index) {
-                            //if (item.active) {
-                                return (
-                                    <div
-                                        key={index}
-                                        className={"barNewsButton " + (this.state.index === index ? "activeNav" : "nonActiveNav")}
-                                        onClick={() => this.handleChange(index)}
-                                    />
-                                );
-                            //}
-                        }.bind(this))}
+                        {this.state.news.map((item, index) => {
+                            return (
+                                <div
+                                    key={index}
+                                    className={"barNewsButton " + (this.state.index === index ? "activeNav" : "nonActiveNav")}
+                                    onClick={() => this.handleChange(index)}
+                                />
+                            );
+                        })}
                     </div>
                     <div className="barNews">
                         <div className="barNewsTitle">{this.state.current.title}</div>
